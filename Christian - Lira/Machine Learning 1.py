@@ -1,8 +1,5 @@
 
-## Need to clean code 
-## 
-
-
+## Need to clean code / Put into a Jnotebook
 
 #%%
 import seaborn as sns
