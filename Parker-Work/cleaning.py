@@ -60,7 +60,7 @@ y = pd.get_dummies(y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= .2)
 
 
-TraingModel = KNeighborsClassifier(n_neighbors= 5)
+TraingModel = KNeighborsClassifier(n_neighbors= 15)
 TraingModel.fit(X_train, y_train)
 Y_Predictions = TraingModel.predict(X_test)
 
