@@ -1,0 +1,55 @@
+
+
+=================================== metrics ==========================================
+
+
+recall, precision or f1 score
+
+Priorities = true positives/false negatives
+
+
+
+
+=================================== features =====================================
+
+
+which features are we using?
+
+
+
+
+==================================== tasks for each person =======================
+
+What number of neighbors?
+
+Which tree?
+
+What max_depth?
+
+
+
+================================= to go into the report ===============================
+
+data/graphs (background)
+
+cleaning
+
+features we chose
+
+max depth
+
+model_selection/how we split the data
+
+metrics
+
+
+
+=============================== logistics ==========================================
+
+
+done coding by class time on Monday
+
+each person finishes his part of the report by Tuesday
+
+
+report = markdown or google doc?
