@@ -37,6 +37,7 @@ def get_precision(x_train, x_test, y_train, y_test):
 
     true_positives = matrix[0][0]
     false_positives = matrix[0][1]
+    false_negative = matrix[1][0]
 
     print(true_positives / (true_positives + false_positives))
 
