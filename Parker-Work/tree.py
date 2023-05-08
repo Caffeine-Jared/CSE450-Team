@@ -16,11 +16,11 @@ from sklearn import metrics
 
 #%%
 # Encode our features and target as needed
-features = ['nr.employed', 'age', 'euribor3m', "campaign"]
+features = ['nr.employed', 'age', 'euribor3m', "campaign", 'cons.conf.idx', 'poutcome']
 X = pd.get_dummies(clean[features], drop_first=True)
 y = clean['y']
 
-# Split our data into training and test data, with 30% reserved for testing
+# Split our data into training and test data, 
 X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
 # Build the decision tree
