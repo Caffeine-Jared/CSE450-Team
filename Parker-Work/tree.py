@@ -24,7 +24,7 @@ y = clean['y']
 X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
 # Build the decision tree
-clf = DecisionTreeClassifier(criterion="log_loss")
+clf = DecisionTreeClassifier(criterion="log_loss", random_state=25)
 #%%
 # Train it
 clf.fit(X_train, y_train)
@@ -48,4 +48,8 @@ report = classification_report(y_test, y_pred)
 
 
 print(report)
+# %%
+conmat = metrics.confusion_matrix(y_test, y_pred)
+# %%
+print(conmat)
 # %%
