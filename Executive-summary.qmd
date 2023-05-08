@@ -32,9 +32,13 @@ import pandas as pd
 
 ## Background
 
-_Explaination to project._
+_A major telemarketing campaign and the results were inadequete to come to a conclusion. We were assigned to impelment a Machine Learning Algorithim to help find the following:_
 
+_1. Find interesting customer segments based on their previous marketing campaign._
+_2. Find a way to identify the types of customers most likely to respond favorably to future marketing campaigns._
+_3.Proving to a skeptical Senhor Ferreira that a targeted campaign based on data science will significantly outperform a campaign made up of randomly selected customers._
 
+_Since we're operating in the European Union, we're subject to GDPR compliance requirements. The GDPR doesn't apply in this situation, since we're just building a model, not selling data. In order to use this data under GDPR, we'll need to get consent from the customers in the dataset._
 
 ## Recommendation
 _._
