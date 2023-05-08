@@ -26,8 +26,6 @@ Which tree?
 
 What max_depth?
 
-
-
 ================================= to go into the report ===============================
 
 data/graphs (background)
