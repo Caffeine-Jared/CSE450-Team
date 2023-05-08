@@ -48,20 +48,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y)
 max_acc = 0 
 best_i = 0
 
-for i in range(20):
-    
-    gnb = RadiusNeighborsClassifier(radius=i)
-    
+gnb = RadiusNeighborsClassifier(radius=21)
 
-    gnb.fit(X_train, y_train)
+gnb.fit(X_train, y_train)
 
-    try:
-        y_pred = gnb.predict(X_test)
-    except ValueError:
-        break
-    
+y_pred = gnb.predict(X_test)
+
+#%% 
 accuracy = accuracy_score(y_test, y_pred)
-    
+#%%
 print("Confusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 
