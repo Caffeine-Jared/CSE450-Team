@@ -40,8 +40,6 @@ model_selection/how we split the data
 
 metrics
 
-
-
 =============================== logistics ==========================================
 
 
