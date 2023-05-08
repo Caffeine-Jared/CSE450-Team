@@ -68,3 +68,8 @@ print("Confusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 print(report)
 # %%
+fig = plt.figure(figsize=(25,20))
+_ = tree.plot_tree(clf,fontsize=10,feature_names=X_test.columns,class_names=['no','yes'],filled=True)
+fig.savefig("decistion_tree.png")
+
+# %%
