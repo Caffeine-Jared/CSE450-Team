@@ -55,7 +55,7 @@ def get_accuracy_neigh5(x_train, x_test, y_train, y_test):
 
     print(accuracy_score(y_test, y_predictions, normalize=True, sample_weight=None))
 
-get_accuracy_neigh5(x_train, x_test, y_train, y_test)
+# get_accuracy_neigh5(x_train, x_test, y_train, y_test)
 
 
 
