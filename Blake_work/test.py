@@ -70,8 +70,12 @@ tp = conmat[1][1]
 fn = conmat[1][0]
 fp = conmat[0][1]
 
-print(f'recall: {(tp / (fn + tp))}')
-print(f'precision: {(tp / (fp + tp))}')
+recall = tp / (fn + tp)
+precision = tp / (fp + tp)
+
+print(f'recall: {recall}')
+print(f'precision: {precision}')
+print(f'F1-score: {((recall * precision) / (recall + precision)) * 2}')
 
 plt.show()
 
