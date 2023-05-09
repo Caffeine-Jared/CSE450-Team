@@ -43,6 +43,7 @@ y = testClean['y']
 X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
 # Build the decision tree
+#Random Forest is better for this data set
 clf = DecisionTreeClassifier(criterion="log_loss")
 #%%
 # Train it
