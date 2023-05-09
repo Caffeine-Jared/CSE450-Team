@@ -5,8 +5,6 @@ import pandas as pd
 clean = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv')
 clean.head()
 
-
-
 #%%
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
@@ -23,15 +21,13 @@ y = clean['y']
 # Split our data into training and test data, 
 # X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 # X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
-# update
+
 # The issue here is that you are splitting the dataset twice, both times using the entire dataset (X and y). 
 # This means that some data points may appear in more than one set (e.g., training and validation, or validation and test sets). 
 # This causes data leakage because the model can indirectly learn from the data that it will later be evaluated on, which leads to overestimating the model's performance.
 
 X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
-
-
 
 # Build the decision tree
 clf = DecisionTreeClassifier(criterion="log_loss", random_state=25)
