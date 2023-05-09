@@ -1,11 +1,14 @@
+#%%
 import pandas as pd
 from sklearn.utils import resample
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
 
 clean = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv')
-
+#%%
 # Separate the majority and minority classes
 bank_majority = clean[clean['y'] == 'no']
 bank_minority = clean[clean['y'] == 'yes']
@@ -75,3 +78,20 @@ print(report)
 
 conmat = confusion_matrix(y_test, y_pred)
 print(conmat)
+
+#%%
+# Choose a single decision tree to visualize (e.g., the first tree)
+tree_to_visualize = clf.estimators_[0]
+
+# Set up the figure
+fig, ax = plt.subplots(figsize=(100, 100))
+
+# Plot the decision tree
+plot_tree(tree_to_visualize, feature_names=X.columns, class_names=['no', 'yes'], filled=True, rounded=True, ax=ax)
+
+# Save the plot as a high-resolution image
+fig.savefig("decision_tree.png", dpi=500)  # Set the DPI to a high value for better resolution
+
+# Show the plot
+plt.show()
+#%%

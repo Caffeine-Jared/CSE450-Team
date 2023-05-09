@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB, ComplementNB
 from sklearn.neighbors import KNeighborsClassifier, RadiusNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
 #%%
@@ -11,6 +12,20 @@ url_bank = 'https://raw.githubusercontent.com/byui-cse/cse450-course/master/data
 
 bank = pd.read_csv(url_bank)
 #bank.replace({'unknown': np.nan, 999: np.nan, 'nonexistent': np.nan}, inplace=True)
+
+
+#%%
+bank.columns
+
+#%%
+bank['day_of_week'].value_counts()
+
+#%%
+bank[['day_of_week', 'marital', 'y']].value_counts()
+
+
+#%%
+bank['y'].value_counts()
 
 #%%
 # Encode Age into ranges 
@@ -43,20 +58,45 @@ for col in columns_to_encode:
 X = bank.drop(['y', 'contact', 'day_of_week', 'poutcome', 'emp.var.rate', 'cons.price.idx', 'cons.conf.idx'], axis=1, inplace=False)
 y = bank['y']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10, shuffle=True)
 
-max_acc = 0 
-best_i = 0
+X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.2, shuffle=True, random_state=25)
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=True, random_state=28)
 
-gnb = RadiusNeighborsClassifier(radius=21)
+# gnb = RadiusNeighborsClassifier(radius=12)
+
+gnb = RandomForestClassifier(random_state=30)
+
+# Train it
+gnb.fit(X_train, y_train)
+
+# Test it 
+gnb.score(X_val, y_val)
+#%%
+# predict it
+y_pred = gnb.predict(X_test)
+
+#Score predictions
+gnb.score(X_test, y_test)
+
 
 gnb.fit(X_train, y_train)
 
-y_pred = gnb.predict(X_test)
+# y_pred = gnb.predict(X_test)
 
-#%% 
-accuracy = accuracy_score(y_test, y_pred)
-#%%
+# try:
+#     gnb = RadiusNeighborsClassifier(radius=10)
+#     gnb.fit(X_train, y_train)
+#     y_pred = gnb.predict(X_test)
+# except ValueError as e:
+#     if str(e) == "No neighbors found for test samples":
+#         print("Warning: No neighbors found. Increasing the radius by 1.")
+#         gnb.radius += 1
+#         y_pred = gnb.predict(X_test)
+#     else:
+#         print(f"Error: {e}")
+
+# Step 7: Evaluate the performance of the model
 print("Confusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 
