@@ -27,6 +27,9 @@ y = clean['y']
 # Split our data into training and test data, with 30% reserved for testing
 X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
+
+
+
 # Build the decision tree
 clf = DecisionTreeClassifier(criterion="log_loss")
 #%%
@@ -68,8 +71,7 @@ plt.show()
 
 # recall = 53.29%
 # precision = 85.88%
-
-
+# f1 score = 65.77%
 
 # ======================================== setting up the predictions file ======================================
 import numpy as np
