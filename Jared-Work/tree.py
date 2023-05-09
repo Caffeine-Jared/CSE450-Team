@@ -90,7 +90,7 @@ fig, ax = plt.subplots(figsize=(100, 100))
 plot_tree(tree_to_visualize, feature_names=X.columns, class_names=['no', 'yes'], filled=True, rounded=True, ax=ax)
 
 # Save the plot as a high-resolution image
-fig.savefig("decision_tree.png", dpi=500)  # Set the DPI to a high value for better resolution
+fig.savefig("decision_tree.png", dpi=200)  # Set the DPI to a high value for better resolution
 
 # Show the plot
 plt.show()

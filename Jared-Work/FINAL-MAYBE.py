@@ -58,20 +58,16 @@ for col in columns_to_encode:
 X = bank.drop(['y', 'contact', 'day_of_week', 'poutcome', 'emp.var.rate', 'cons.price.idx', 'cons.conf.idx'], axis=1, inplace=False)
 y = bank['y']
 
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10, shuffle=True)
 
-X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.2, shuffle=True, random_state=25)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=True, random_state=28)
+gnb = RadiusNeighborsClassifier(radius=8)
 
-# gnb = RadiusNeighborsClassifier(radius=12)
-
-gnb = RandomForestClassifier(random_state=30)
+# gnb = RandomForestClassifier(random_state=30)
 
 # Train it
 gnb.fit(X_train, y_train)
 
 # Test it 
-gnb.score(X_val, y_val)
 #%%
 # predict it
 y_pred = gnb.predict(X_test)
