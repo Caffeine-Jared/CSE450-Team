@@ -54,7 +54,7 @@ _._
 
 We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models. 
 
-Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed the for how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals.  
+Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals. 
 
 
 ## Results, Actions, and Limitations
