@@ -43,7 +43,7 @@ X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
 # Define the parameter grid to search over
 param_grid = {
     'n_estimators': [50, 100, 200],
-    'max_depth': [10, 20, 30],
+    'max_depth': [10, 20, 30, 40],
     'min_samples_split': [2, 5, 10],
     'min_samples_leaf': [1, 2, 4]
 }
@@ -110,8 +110,6 @@ no_percentage = (no_count / len(y_holdout_pred)) * 100
 # Print the percentage of 'yes' and 'no' predictions
 print(f"Percentage of 'yes' predictions: {yes_percentage:.2f}%")
 print(f"Percentage of 'no' predictions: {no_percentage:.2f}%")
-
-
 
 # #%%
 # # Choose a single decision tree to visualize (e.g., the first tree)
