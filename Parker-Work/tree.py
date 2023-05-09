@@ -7,6 +7,7 @@ clean.head()
 
 #%%
 from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
@@ -30,7 +31,7 @@ X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
 
 # Build the decision tree
-clf = DecisionTreeClassifier(criterion="log_loss", random_state=25)
+clf = RandomForestClassifier(random_state=25)
 #%%
 # Train it
 clf.fit(X_train, y_train)
