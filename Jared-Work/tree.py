@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 from sklearn.tree import plot_tree
+from sklearn.metrics import ConfusionMatrixDisplay
 
 clean = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv')
 #%%
@@ -113,6 +114,12 @@ print(f"Percentage of 'no' predictions: {no_percentage:.2f}%")
 
 
 
+disp = ConfusionMatrixDisplay.from_estimator(
+  clf,
+  X_test,
+  y_test,
+  cmap=plt.cm.Blues,
+)
 # #%%
 # # Choose a single decision tree to visualize (e.g., the first tree)
 # tree_to_visualize = clf.estimators_[0]
@@ -127,6 +134,6 @@ print(f"Percentage of 'no' predictions: {no_percentage:.2f}%")
 # fig.savefig("decision_tree.png", dpi=200)  # Set the DPI to a high value for better resolution
 
 # # Show the plot
-# plt.show()
+plt.show()
 # #%%
 # %%
