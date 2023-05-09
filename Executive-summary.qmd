@@ -26,7 +26,12 @@ format:
 ```{python}
 #| label: libraries
 #| include: false
+import numpy as np 
 import pandas as pd
+import altair as alt
+url_bank = 'https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv'
+
+bank = pd.read_csv(url_bank)
 ```
 
 
@@ -38,7 +43,7 @@ _1. Find interesting customer segments based on their previous marketing campaig
 _2. Find a way to identify the types of customers most likely to respond favorably to future marketing campaigns._
 _3.Proving to a skeptical Senhor Ferreira that a targeted campaign based on data science will significantly outperform a campaign made up of randomly selected customers._
 
-_Since we're operating in the European Union, we're subject to GDPR compliance requirements. The GDPR doesn't apply in this situation, since we're just building a model, not selling data. In order to use this data under GDPR, we'll need to get consent from the customers in the dataset._
+_Since we're operating in the European Union, we're subject to GDPR compliance requirements. The GDPR doesn't apply in this situation, since we're just building a model, not selling data. In order to use this data under GDPR, we'll need to get consent from the customers in the dataset. We are also using only historic data that has been put into an anonymous format so we will be compliant in that department as well._
 
 ## Recommendation
 _._
@@ -46,10 +51,10 @@ _._
 
 ## Methodology
 
-_._
 
+We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models. 
 
-_._
+Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals. 
 
 
 ## Results, Actions, and Limitations
@@ -62,6 +67,30 @@ _._
 ## Metrics
 
 ## Questions
+__Types of customers respond better on certain days than others?__
+```{python}
+#| label: jobs
+#| include: false
+filtered_bank2 = bank.loc[(bank['contact'] == 'cellular') | (bank['contact'] == 'telephone')]
 
 
+success_rate = filtered_bank2.groupby(['contact', 'job'])['y'].value_counts(normalize=True).reset_index(name='success_rate')
+success_rate = success_rate.loc[success_rate['y'] == 'yes']
+
+chart3 = alt.Chart(success_rate).mark_bar().encode(
+    x=alt.X('job:N', axis=alt.Axis(title='Job Type')),
+    y=alt.Y('success_rate:Q', axis=alt.Axis(format='.0%')),
+    color=alt.Color('contact:N', legend=None),
+    column=alt.Column('contact:N', header=alt.Header(title='Contact Type')),
+    tooltip=[alt.Tooltip('success_rate:Q', format='.2%')],
+).properties(
+    width=200,
+    title="Success Rate of Calling Customers by Contact Type and Job"
+)
+```
+
+```{python}
+#| include: include
+chart3
+```
 ## Python Notebooks
