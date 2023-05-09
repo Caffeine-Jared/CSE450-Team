@@ -26,7 +26,12 @@ format:
 ```{python}
 #| label: libraries
 #| include: false
+import numpy as np 
 import pandas as pd
+import altair as alt
+url_bank = 'https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv'
+
+bank = pd.read_csv(url_bank)
 ```
 
 
@@ -62,6 +67,29 @@ _._
 ## Metrics
 
 ## Questions
+__Types of customers respond better on certain days than others?__
+```{python}
+#| label: jobs
+#| include: false
+filtered_bank2 = bank.loc[(bank['contact'] == 'cellular') | (bank['contact'] == 'telephone')]
 
 
+success_rate = filtered_bank2.groupby(['contact', 'job'])['y'].value_counts(normalize=True).reset_index(name='success_rate')
+success_rate = success_rate.loc[success_rate['y'] == 'yes']
+
+chart3 = alt.Chart(success_rate).mark_bar().encode(
+    x=alt.X('job:N', axis=alt.Axis(title='Job Type')),
+    y=alt.Y('success_rate:Q', axis=alt.Axis(format='.0%')),
+    color=alt.Color('contact:N', legend=None),
+    column=alt.Column('contact:N', header=alt.Header(title='Contact Type')),
+    tooltip=[alt.Tooltip('success_rate:Q', format='.2%')],
+).properties(
+    width=200,
+    title="Success Rate of Calling Customers by Contact Type and Job"
+)
+```
+
+```{python}
+chart3
+```
 ## Python Notebooks

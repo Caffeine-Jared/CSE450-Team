@@ -38,12 +38,12 @@ counts = counts.sort_values(by=['day_of_week'], key=lambda x: pd.Categorical(x, 
 chart1 = alt.Chart(counts).mark_bar().encode(
     x=alt.X('day_of_week:N', sort=day_order),
     y='count:Q',
-    color='y:N',
-    column='marital:N'
+    color='y:N'#,
+    #column='marital:N'
 ).properties(
     width=100,
     title="Data Distribution by Day of Week, Marital Status, and Y (Cellular Contacts Only)"
-)
+).facet(facet='marital:N')
 
 # Display the chart
 chart1
@@ -71,7 +71,7 @@ chart2 = alt.Chart(counts).mark_bar().encode(
 ).properties(
     width=100,
     title="Data Distribution by Day of Week, Marital Status, and Y (Telephone Contacts Only)"
-)
+)#.facet(facet='marital:N')
 
 # Display the chart
 chart2
