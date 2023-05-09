@@ -24,11 +24,11 @@ clean_balanced['last_contact'] = clean_balanced['pdays'].apply(lambda x: 1 if x 
 clean_balanced['recent_contact'] = clean_balanced['pdays'].apply(lambda x: 1 if x < 30 else 0)
 clean_balanced['previous_contact'] = clean_balanced['previous'].apply(lambda x: 1 if x > 0 else 0)
 
-# Feature Engineering
-clean_balanced['age_group'] = pd.cut(clean_balanced['age'], bins=[0, 25, 35, 45, 55, 65, 100], labels=['0-25', '26-35', '36-45', '46-55', '56-65', '66+'])
-clean_balanced['education'] = clean_balanced['education'].replace({"unknown": "unknown_education"})
-clean_balanced['job'] = clean_balanced['job'].replace({"unknown": "unknown_job"})
-clean_balanced['poutcome_success'] = clean_balanced['poutcome'].apply(lambda x: 1 if x == 'success' else 0)
+# # Feature Engineering
+# clean_balanced['age_group'] = pd.cut(clean_balanced['age'], bins=[0, 25, 35, 45, 55, 65, 100], labels=['0-25', '26-35', '36-45', '46-55', '56-65', '66+'])
+# clean_balanced['education'] = clean_balanced['education'].replace({"unknown": "unknown_education"})
+# clean_balanced['job'] = clean_balanced['job'].replace({"unknown": "unknown_job"})
+# clean_balanced['poutcome_success'] = clean_balanced['poutcome'].apply(lambda x: 1 if x == 'success' else 0)
 
 # Encode our features and target as needed
 features = ['nr.employed', 'age', 'euribor3m', "campaign", 'cons.conf.idx', 'poutcome', 'last_contact', 'recent_contact', 'previous_contact']
