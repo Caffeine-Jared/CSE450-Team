@@ -66,6 +66,13 @@ import matplotlib.pyplot as plt
 disp = ConfusionMatrixDisplay(confusion_matrix=conmat, display_labels=clf.classes_)
 disp.plot()
 
+tp = conmat[1][1]
+fn = conmat[1][0]
+fp = conmat[0][1]
+
+print(f'recall: {(tp / (fn + tp))}')
+print(f'precision: {(tp / (fp + tp))}')
+
 plt.show()
 
 
