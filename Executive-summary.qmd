@@ -90,6 +90,7 @@ chart3 = alt.Chart(success_rate).mark_bar().encode(
 ```
 
 ```{python}
+#| include: include
 chart3
 ```
 ## Python Notebooks

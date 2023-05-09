@@ -21,69 +21,6 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-{ counter-reset: source-line 0; }
-pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-color: #aaaaaa;
-}
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
-div.sourceCode
-{ }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } 
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.at { color: #7d9029; } 
-code span.bn { color: #40a070; } 
-code span.bu { color: #008000; } 
-code span.cf { color: #007020; font-weight: bold; } 
-code span.ch { color: #4070a0; } 
-code span.cn { color: #880000; } 
-code span.co { color: #60a0b0; font-style: italic; } 
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.do { color: #ba2121; font-style: italic; } 
-code span.dt { color: #902000; } 
-code span.dv { color: #40a070; } 
-code span.er { color: #ff0000; font-weight: bold; } 
-code span.ex { } 
-code span.fl { color: #40a070; } 
-code span.fu { color: #06287e; } 
-code span.im { color: #008000; font-weight: bold; } 
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
-code span.kw { color: #007020; font-weight: bold; } 
-code span.op { color: #666666; } 
-code span.ot { color: #007020; } 
-code span.pp { color: #bc7a00; } 
-code span.sc { color: #4070a0; } 
-code span.ss { color: #bb6688; } 
-code span.st { color: #4070a0; } 
-code span.va { color: #19177c; } 
-code span.vs { color: #4070a0; } 
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 
 
@@ -2610,7 +2547,7 @@ vertical-align: -.125em;
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page">
-      <div class="quarto-title-block"><div><h1 class="title">Banco Federal de Finanças Report</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> See code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+      <h1 class="title">Banco Federal de Finanças Report</h1>
             <p class="subtitle lead">Target Marketing Campaign</p>
                       </div>
   </div>
@@ -2655,7 +2592,7 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="background">Background</h2>
 <p><em>A major telemarketing campaign and the results were inadequete to come to a conclusion. We were assigned to impelment a Machine Learning Algorithim to help find the following:</em></p>
 <p><em>1. Find interesting customer segments based on their previous marketing campaign.</em> <em>2. Find a way to identify the types of customers most likely to respond favorably to future marketing campaigns.</em> <em>3.Proving to a skeptical Senhor Ferreira that a targeted campaign based on data science will significantly outperform a campaign made up of randomly selected customers.</em></p>
-<p><em>Since we’re operating in the European Union, we’re subject to GDPR compliance requirements. The GDPR doesn’t apply in this situation, since we’re just building a model, not selling data. In order to use this data under GDPR, we’ll need to get consent from the customers in the dataset.</em></p>
+<p><em>Since we’re operating in the European Union, we’re subject to GDPR compliance requirements. The GDPR doesn’t apply in this situation, since we’re just building a model, not selling data. In order to use this data under GDPR, we’ll need to get consent from the customers in the dataset. We are also using only historic data that has been put into an anonymous format so we will be compliant in that department as well.</em></p>
 </section>
 <section id="recommendation" class="level2">
 <h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
@@ -2663,8 +2600,8 @@ vertical-align: -.125em;
 </section>
 <section id="methodology" class="level2">
 <h2 class="anchored" data-anchor-id="methodology">Methodology</h2>
-<p><em>.</em></p>
-<p><em>.</em></p>
+<p>We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models.</p>
+<p>Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed the for how recently people had been contacted to move the people who had not been contacted into separate groups. We also made it a point to put our numeric data in groups not using them as individuals.</p>
 </section>
 <section id="results-actions-and-limitations" class="level2">
 <h2 class="anchored" data-anchor-id="results-actions-and-limitations">Results, Actions, and Limitations</h2>
@@ -2679,69 +2616,6 @@ vertical-align: -.125em;
 <section id="questions" class="level2">
 <h2 class="anchored" data-anchor-id="questions">Questions</h2>
 <p><strong>Types of customers respond better on certain days than others?</strong></p>
-<div class="cell" data-execution_count="3">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>chart3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display" data-execution_count="3">
-
-<div id="altair-viz-148366ee83164ccbab044a8fd3692bc5"></div>
-<script type="text/javascript">
-  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
-  (function(spec, embedOpt){
-    let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-148366ee83164ccbab044a8fd3692bc5") {
-      outputDiv = document.getElementById("altair-viz-148366ee83164ccbab044a8fd3692bc5");
-    }
-    const paths = {
-      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
-      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
-      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.17.0?noext",
-      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
-    };
-
-    function maybeLoadScript(lib, version) {
-      var key = `${lib.replace("-", "")}_version`;
-      return (VEGA_DEBUG[key] == version) ?
-        Promise.resolve(paths[lib]) :
-        new Promise(function(resolve, reject) {
-          var s = document.createElement('script');
-          document.getElementsByTagName("head")[0].appendChild(s);
-          s.async = true;
-          s.onload = () => {
-            VEGA_DEBUG[key] = version;
-            return resolve(paths[lib]);
-          };
-          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
-          s.src = paths[lib];
-        });
-    }
-
-    function showError(err) {
-      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
-      throw err;
-    }
-
-    function displayChart(vegaEmbed) {
-      vegaEmbed(outputDiv, spec, embedOpt)
-        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
-    }
-
-    if(typeof define === "function" && define.amd) {
-      requirejs.config({paths});
-      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
-    } else {
-      maybeLoadScript("vega", "5")
-        .then(() => maybeLoadScript("vega-lite", "4.17.0"))
-        .then(() => maybeLoadScript("vega-embed", "6"))
-        .catch(showError)
-        .then(() => displayChart(vegaEmbed));
-    }
-  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-d0044712b1c046cb4faae5d7cde31fb6"}, "mark": "bar", "encoding": {"color": {"field": "contact", "legend": null, "type": "nominal"}, "column": {"field": "contact", "header": {"title": "Contact Type"}, "type": "nominal"}, "tooltip": [{"field": "success_rate", "format": ".2%", "type": "quantitative"}], "x": {"axis": {"title": "Job Type"}, "field": "job", "type": "nominal"}, "y": {"axis": {"format": ".0%"}, "field": "success_rate", "type": "quantitative"}}, "title": "Success Rate of Calling Customers by Contact Type and Job", "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-d0044712b1c046cb4faae5d7cde31fb6": [{"contact": "cellular", "job": "admin.", "y": "yes", "success_rate": 0.16497738967721814}, {"contact": "cellular", "job": "blue-collar", "y": "yes", "success_rate": 0.08989744708706088}, {"contact": "cellular", "job": "entrepreneur", "y": "yes", "success_rate": 0.10588235294117647}, {"contact": "cellular", "job": "housemaid", "y": "yes", "success_rate": 0.1356521739130435}, {"contact": "cellular", "job": "management", "y": "yes", "success_rate": 0.147588611272516}, {"contact": "cellular", "job": "retired", "y": "yes", "success_rate": 0.3159340659340659}, {"contact": "cellular", "job": "self-employed", "y": "yes", "success_rate": 0.14676616915422885}, {"contact": "cellular", "job": "services", "y": "yes", "success_rate": 0.11041465766634523}, {"contact": "cellular", "job": "student", "y": "yes", "success_rate": 0.36333878887070375}, {"contact": "cellular", "job": "technician", "y": "yes", "success_rate": 0.13453237410071942}, {"contact": "cellular", "job": "unemployed", "y": "yes", "success_rate": 0.2039355992844365}, {"contact": "cellular", "job": "unknown", "y": "yes", "success_rate": 0.16216216216216217}, {"contact": "telephone", "job": "admin.", "y": "yes", "success_rate": 0.0589219953130231}, {"contact": "telephone", "job": "blue-collar", "y": "yes", "success_rate": 0.04164442071542979}, {"contact": "telephone", "job": "entrepreneur", "y": "yes", "success_rate": 0.058931860036832415}, {"contact": "telephone", "job": "housemaid", "y": "yes", "success_rate": 0.046511627906976744}, {"contact": "telephone", "job": "management", "y": "yes", "success_rate": 0.05285868392664509}, {"contact": "telephone", "job": "retired", "y": "yes", "success_rate": 0.09502262443438914}, {"contact": "telephone", "job": "self-employed", "y": "yes", "success_rate": 0.04042553191489362}, {"contact": "telephone", "job": "services", "y": "yes", "success_rate": 0.04341926729986431}, {"contact": "telephone", "job": "student", "y": "yes", "success_rate": 0.14835164835164835}, {"contact": "telephone", "job": "technician", "y": "yes", "success_rate": 0.05168776371308017}, {"contact": "telephone", "job": "unemployed", "y": "yes", "success_rate": 0.05649717514124294}, {"contact": "telephone", "job": "unknown", "y": "yes", "success_rate": 0.07534246575342465}]}}, {"mode": "vega-lite"});
-</script>
-</div>
-</div>
 </section>
 <section id="python-notebooks" class="level2">
 <h2 class="anchored" data-anchor-id="python-notebooks">Python Notebooks</h2>
