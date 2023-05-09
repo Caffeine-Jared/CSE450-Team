@@ -86,6 +86,6 @@ predictions[0] = np.where(predictions[0] == 'no', 0, 1)
 
 predictions.rename(columns = {0:'predictions'}, inplace = True)
 
-predictions.to_csv(path_or_buf=r'C:\Users\Blake Dennett\Downloads\Spring2023\machineLearning\team_04\CSE450-Team\Blake_work\team4-module2-predictions.csv', index=False)
+# predictions.to_csv(path_or_buf=r'C:\Users\Blake Dennett\Downloads\Spring2023\machineLearning\team_04\CSE450-Team\Blake_work\team4-module2-predictions.csv', index=False)
 
 # %%
