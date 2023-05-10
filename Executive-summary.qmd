@@ -52,9 +52,9 @@ _._
 ## Methodology
 
 
-We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models. 
+_We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models._
 
-Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals. 
+_Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals._
 
 
 ## Results, Actions, and Limitations
@@ -63,7 +63,7 @@ _._
 
 
 ## Tree
-For our model, we decided to use the RandomForestClassifier which constructs multiple decision trees during the training phase and then combines their predictions to produce more accurate and stable results. We augmented the RandomForestClassifier using hyperparameters which controlled certain aspects of the final decision tree, including the number of trees in the forest, the max depth of each tree, and the number of samples required to split an internal node. The hyperparameters are determined by using GridSearchCV, which will search over a specified parameter grid, and determine the best parameters by which we should control the decision tree.
+_For our model, we decided to use the RandomForestClassifier which constructs multiple decision trees during the training phase and then combines their predictions to produce more accurate and stable results. We augmented the RandomForestClassifier using hyperparameters which controlled certain aspects of the final decision tree, including the number of trees in the forest, the max depth of each tree, and the number of samples required to split an internal node. The hyperparameters are determined by using GridSearchCV, which will search over a specified parameter grid, and determine the best parameters by which we should control the decision tree._
 
 ## Metrics
 
@@ -127,28 +127,34 @@ clf.fit(X_train, y_train)
 # Test the random forest classifier
 y_pred = clf.predict(X_test)
 
+
+
+```
+
+```{python}
 disp = ConfusionMatrixDisplay.from_estimator(
   clf,
   X_test,
   y_test,
-  cmap=plt.cm.Blues,
-)
-
+  cmap=plt.cm.Blues,)
 plt.show()
 ```
 
 ## Questions
 __Types of customers respond better on certain days than others?__
 ```{python}
-#| label: jobs
 #| include: false
+#| label: Chart functions
+
+#======================Chart 1
 filtered_bank2 = bank.loc[(bank['contact'] == 'cellular') | (bank['contact'] == 'telephone')]
 
-
+# Compute the success rate of calling customers by contact type and job
 success_rate = filtered_bank2.groupby(['contact', 'job'])['y'].value_counts(normalize=True).reset_index(name='success_rate')
 success_rate = success_rate.loc[success_rate['y'] == 'yes']
 
-chart3 = alt.Chart(success_rate).mark_bar().encode(
+# Create an Altair chart with the success rate
+chart1 = alt.Chart(success_rate).mark_bar().encode(
     x=alt.X('job:N', axis=alt.Axis(title='Job Type')),
     y=alt.Y('success_rate:Q', axis=alt.Axis(format='.0%')),
     color=alt.Color('contact:N', legend=None),
@@ -158,10 +164,70 @@ chart3 = alt.Chart(success_rate).mark_bar().encode(
     width=200,
     title="Success Rate of Calling Customers by Contact Type and Job"
 )
+#=======================Chart 2
+filtered_bank = bank.loc[(bank['contact'] == 'cellular') & (bank['marital'] != 'unknown') & (bank['job'] == 'student')]
+
+# Compute value counts on the filtered DataFrame
+counts = filtered_bank[['day_of_week', 'marital', 'y']].value_counts().reset_index()
+counts.columns = ['day_of_week', 'marital', 'y', 'count']
+
+# Define the desired order of the categories
+day_order = ['mon', 'tue', 'wed', 'thu', 'fri']
+
+# Apply the order to the day_of_week column of the counts DataFrame
+counts = counts.sort_values(by=['day_of_week'], key=lambda x: pd.Categorical(x, categories=day_order))
+
+# Create an Altair chart with the sorted x-axis
+chart2 = alt.Chart(counts).mark_bar().encode(
+    x=alt.X('day_of_week:N', sort=day_order),
+    y='count:Q',
+    color='y:N',
+    column='marital:N'
+).properties(
+    width=100,
+    title={
+    "text": ["Data Distribution by Day of Week, Marital Status, and Y (Cellular Contacts Only)"],
+    "subtitle" : ["Student Job Type"]}
+)
+#=======================Chart 3
+filtered_bank3 = bank.loc[(bank['contact'] == 'cellular') & (bank['marital'] != 'unknown') & (bank['job'] == 'retired')]
+
+# Compute value counts on the filtered DataFrame
+counts2 = filtered_bank3[['day_of_week', 'marital', 'y']].value_counts().reset_index()
+counts2.columns = ['day_of_week', 'marital', 'y', 'count']
+
+# Define the desired order of the categories
+day_order = ['mon', 'tue', 'wed', 'thu', 'fri']
+
+# Apply the order to the day_of_week column of the counts DataFrame
+counts2 = counts2.sort_values(by=['day_of_week'], key=lambda x: pd.Categorical(x, categories=day_order))
+
+# Create an Altair chart with the sorted x-axis
+chart1 = alt.Chart(counts2).mark_bar().encode(
+    x=alt.X('day_of_week:N', sort=day_order),
+    y='count:Q',
+    color='y:N',
+    column='marital:N'
+).properties(
+    width=100,
+    title={
+        "text":["Data Distribution by Day of Week, Marital Status, and Y (Cellular Contacts Only)"],
+        "subtitle":["Retired Job Type"]}
+)
 ```
 
 ```{python}
-#| include: include
 chart3
 ```
+_We wanted to see which of the two methods of contact would have the highest success rate from the marketing campaign. As you can see, Contacting people using a Cellular device would be more benificial than call those with a telephone. We also can see that Retired and Student have a 31.59% and 36.33% chance of a success rate._
+
+```{python}
+chart2
+```
+_Looking more into the Student side in which day would be best and to know if they were Divorced,Married, or Single had help drill in our target audience. Based on Single section, we can see that during the middle of the week has a higher chance of gaining a successful call. We also see that we gain nothing by calling Divorced Students._
+```{python}
+chart1
+```
+_Looking more into the Retired side, we also wanted to know which marital status would be best to call. The pattern for Retired and Students seems to be the same where they would be more successfull by calling in the middle of the week (Tueday through Thrursday) than any other week._
+
 ## Python Notebooks
