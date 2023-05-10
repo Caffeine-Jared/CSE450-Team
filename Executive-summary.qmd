@@ -46,7 +46,16 @@ _3.Proving to a skeptical Senhor Ferreira that a targeted campaign based on data
 _Since we're operating in the European Union, we're subject to GDPR compliance requirements. The GDPR doesn't apply in this situation, since we're just building a model, not selling data. In order to use this data under GDPR, we'll need to get consent from the customers in the dataset. We are also using only historic data that has been put into an anonymous format so we will be compliant in that department as well._
 
 ## Recommendation
-_._
+_Features or Catagories we decided were based on correlation with the amount of "Yes":_
+_Number of Employees_
+_Age_
+_Euro Interbank Offered 3 month rate_
+_The number of contacts performed during this campaign and for this client_
+_Consumer confidence index - monthly indicator_
+_The outcome of the previous marketing campaign_
+_The number of contacts performed before this campaign and for this client_
+_The number of days that passed by after the client was last contacted from a previous campaign_
+_The number of days that passed by after the client was last contacted from a previous campaign recently_
 
 
 ## Methodology
@@ -56,18 +65,12 @@ _We decided that using a supervised approach would be ideal for this job because
 
 _Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals._
 
-
-## Results, Actions, and Limitations
-
-_._
-
-
 ## Tree
 _For our model, we decided to use the RandomForestClassifier which constructs multiple decision trees during the training phase and then combines their predictions to produce more accurate and stable results. We augmented the RandomForestClassifier using hyperparameters which controlled certain aspects of the final decision tree, including the number of trees in the forest, the max depth of each tree, and the number of samples required to split an internal node. The hyperparameters are determined by using GridSearchCV, which will search over a specified parameter grid, and determine the best parameters by which we should control the decision tree._
 
 ## Metrics
 
-We decided the most important metric is recall. We wanted to make sure we get as many yes's with the least amount of calls. Then precesion is the next important. The data we validated our model with included 3,707 pepole. Of those people we predicted that 3,456 would say no and 251 would say yes. We had a 28.7% recall and a 52.2% precision. This means that our model only got around 30% of the people that said yes. But over half of the people the model said was a yes, would actually agree to the campaign. This means that every other person you call will agree to the campaign. So we weren't able to get all the people that would say yes, but we cut out over 3,100 calls out. So you would be able to save a lot of time and money cutting out all the other calls you would have been making.
+_We decided the most important metric is recall. We wanted to make sure we get as many yes's with the least amount of calls. Then precesion is the next important. The data we validated our model with included 3,707 pepole. Of those people we predicted that 3,456 would say no and 251 would say yes. We had a 28.7% recall and a 52.2% precision. This means that our model only got around 30% of the people that said yes. But over half of the people the model said was a yes, would actually agree to the campaign. So we weren't able to get all the people that would say yes, but we cut out over 3,100 calls out. So you would be able to save a lot of time and money cutting out all the other calls you would have been making._
 
 ```{python}
 #| label: Matrix
@@ -217,16 +220,16 @@ chart1 = alt.Chart(counts2).mark_bar().encode(
 ```
 
 ```{python}
-#chart3
+chart3
 ```
 _We wanted to see which of the two methods of contact would have the highest success rate from the marketing campaign. As you can see, Contacting people using a Cellular device would be more benificial than call those with a telephone. We also can see that Retired and Student have a 31.59% and 36.33% chance of a success rate._
 
 ```{python}
-#chart2
+chart2
 ```
 _Looking more into the Student side in which day would be best and to know if they were Divorced,Married, or Single had help drill in our target audience. Based on Single section, we can see that during the middle of the week has a higher chance of gaining a successful call. We also see that we gain nothing by calling Divorced Students._
 ```{python}
-#chart1
+chart1
 ```
 _Looking more into the Retired side, we also wanted to know which marital status would be best to call. The pattern for Retired and Students seems to be the same where they would be more successfull by calling in the middle of the week (Tueday through Thrursday) than any other week._
 
