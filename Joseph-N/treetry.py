@@ -1,76 +1,87 @@
-#%%
-#Imports
+
 import pandas as pd
-import altair as alt
-import numpy as np
-from sklearn import tree
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import classification_report
-from sklearn.metrics import precision_score
-from sklearn.metrics import confusion_matrix
+from sklearn.utils import resample
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import classification_report, confusion_matrix
+from imblearn.over_sampling import RandomOverSampler
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.feature_selection import SelectKBest
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-import seaborn as sns
-sns.set_theme(style="ticks")
-import matplotlib.pyplot as plt
 
-#%%
-data = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv')
 
-testClean = data
-testClean["job"] = testClean["job"].replace(['unknown'], "admin.")
-testClean["marital"] = testClean["marital"].replace(['unknown'], "married")
-testClean["education"] = testClean["education"].replace(['unknown'], "university.degree")
-testClean["default"] = testClean["default"].replace(['unknown'], "no")
-testClean["housing"] = testClean["housing"].replace(['unknown'], "yes")
-testClean["loan"] = testClean["loan"].replace(['unknown'], "no")
-testClean['poutcome'] = testClean['poutcome'].replace(['nonexistent'], "failure")
-testClean['pdays'] = testClean['pdays'].apply(lambda x: 0 if x == 999 else x)
-testClean[['job','marital',"education",'default','housing','contact','month','day_of_week','poutcome','loan','y']] = testClean[['job','marital',"education",'default','housing','contact','month','day_of_week','poutcome','loan','y']].apply(lambda x: pd.factorize(x)[0])
-testClean = testClean[~testClean['pdays'].isna()]
-testClean.info()
+clean = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv')
 
-#%%
-features = ['nr.employed', 'age', 'euribor3m', "campaign"]
-X = pd.get_dummies(testClean[features], drop_first=True)
-y = testClean['y']
+# Create some new features
+def create_new_features(data):
+    data['last_contact'] = data['pdays'].apply(lambda x: 1 if x == 999 else 0)
+    data['recent_contact'] = data['pdays'].apply(lambda x: 1 if x < 30 else 0)
+    data['previous_contact'] = data['previous'].apply(lambda x: 1 if x > 0 else 0)
 
-# Split our data into training and test data, with 30% reserved for testing
-X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
-# Build the decision tree
-#Random Forest is better for this data set
-clf = DecisionTreeClassifier(criterion="log_loss")
-#%%
-# Train it
+create_new_features(clean)
+
+# Encode our features and target as needed
+X = pd.get_dummies(clean.drop(['y'], axis=1))
+y = clean['y']
+
+mutual_info = mutual_info_classif(X, y)
+mutual_info = pd.Series(mutual_info)
+mutual_info.index = X.columns
+mutual_info.sort_values(ascending=False)
+
+sel_three_feat = SelectKBest(mutual_info_classif, k=9).fit(X, y)
+sel_bool = sel_three_feat.get_support()
+X_sel = X[X.columns[sel_bool]]
+
+# Split our data into training and test data
+X_train_val, X_test, y_train_val, y_test = train_test_split(X_sel, y, test_size=0.1, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_train_val, y_train_val, test_size=0.2, random_state=42)
+
+# Use RandomOverSampler for oversampling
+ros = RandomOverSampler(random_state=42)
+X_train_balanced, y_train_balanced = ros.fit_resample(X_train, y_train)
+
+# Define the parameter grid to search over
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+# Create a random forest classifier
+clf = RandomForestClassifier(random_state=25, n_jobs=-1)
+
+# Create a GridSearchCV object
+grid_search = GridSearchCV(clf, param_grid, cv=5, n_jobs=-1)
+
+# Fit the grid search object to the data
+grid_search.fit(X_train_balanced, y_train_balanced)
+
+# Print the best hyperparameters and their corresponding accuracy score
+print("Best hyperparameters: ", grid_search.best_params_)
+print("Accuracy score: ", grid_search.best_score_)
+
+
+# Build the random forest classifier with the best hyperparameters
+clf = RandomForestClassifier(n_estimators=grid_search.best_params_['n_estimators'],
+                              max_depth=grid_search.best_params_['max_depth'],
+                              min_samples_split=grid_search.best_params_['min_samples_split'],
+                              min_samples_leaf=grid_search.best_params_['min_samples_leaf'],
+                              random_state=25, n_jobs=-1)
+
+# Train the random forest classifier
 clf.fit(X_train, y_train)
 
-# Test it 
-clf.score(X_val, y_val)
-#%%
-# predict it
+# Test the random forest classifier
 y_pred = clf.predict(X_test)
 
-#Score predictions
-clf.score(X_test, y_test)
-
-# Note that this gives us an accuracy score, which may not be the best metric.
-# See the SciKit-Learn docs for more ways to assess a model's performance, as
-# well as methods for cross validation.
-# %%
-from sklearn.metrics import classification_report
-
+# Generate classification report and confusion matrix
 report = classification_report(y_test, y_pred)
-print("Confusion Matrix:")
-print(confusion_matrix(y_test, y_pred))
 print(report)
-# %%
-fig = plt.figure(figsize=(25,20))
-_ = tree.plot_tree(clf,fontsize=10,feature_names=X_test.columns,class_names=['no','yes'],filled=True)
-fig.savefig("decistion_tree.png")
 
-# %%
+conmat = confusion_matrix(y_test, y_pred)
+print(conmat)
