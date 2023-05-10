@@ -52,9 +52,9 @@ _._
 ## Methodology
 
 
-We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models. 
+_We decided that using a supervised approach would be ideal for this job because we are trying to classify our clientele would have interest in subscribing to a term deposit. Supervised approaches are better for getting a finite answer. When we took our data we decided that use eighty percent of the data for training and the remaining data for testing and validation. We chose this distribution due to this being a relatively small dataset and is the standard distribution for supervised learning models._
 
-Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals. 
+_Before we even started applying the data to our learning model. We needed to adjust some of our data to make it more usable. We changed how recently people had been contacted to move the people who had not been contacted into separate groups.  We also made it a point to put our numeric data in groups not using them as individuals._
 
 
 ## Results, Actions, and Limitations
@@ -69,15 +69,18 @@ _._
 ## Questions
 __Types of customers respond better on certain days than others?__
 ```{python}
-#| label: jobs
 #| include: false
+#| label: Chart functions
+
+#======================Chart 1
 filtered_bank2 = bank.loc[(bank['contact'] == 'cellular') | (bank['contact'] == 'telephone')]
 
-
+# Compute the success rate of calling customers by contact type and job
 success_rate = filtered_bank2.groupby(['contact', 'job'])['y'].value_counts(normalize=True).reset_index(name='success_rate')
 success_rate = success_rate.loc[success_rate['y'] == 'yes']
 
-chart3 = alt.Chart(success_rate).mark_bar().encode(
+# Create an Altair chart with the success rate
+chart1 = alt.Chart(success_rate).mark_bar().encode(
     x=alt.X('job:N', axis=alt.Axis(title='Job Type')),
     y=alt.Y('success_rate:Q', axis=alt.Axis(format='.0%')),
     color=alt.Color('contact:N', legend=None),
@@ -87,10 +90,68 @@ chart3 = alt.Chart(success_rate).mark_bar().encode(
     width=200,
     title="Success Rate of Calling Customers by Contact Type and Job"
 )
+#=======================Chart 2
+filtered_bank = bank.loc[(bank['contact'] == 'cellular') & (bank['marital'] != 'unknown') & (bank['job'] == 'student')]
+
+# Compute value counts on the filtered DataFrame
+counts = filtered_bank[['day_of_week', 'marital', 'y']].value_counts().reset_index()
+counts.columns = ['day_of_week', 'marital', 'y', 'count']
+
+# Define the desired order of the categories
+day_order = ['mon', 'tue', 'wed', 'thu', 'fri']
+
+# Apply the order to the day_of_week column of the counts DataFrame
+counts = counts.sort_values(by=['day_of_week'], key=lambda x: pd.Categorical(x, categories=day_order))
+
+# Create an Altair chart with the sorted x-axis
+chart2 = alt.Chart(counts).mark_bar().encode(
+    x=alt.X('day_of_week:N', sort=day_order),
+    y='count:Q',
+    color='y:N',
+    column='marital:N'
+).properties(
+    width=100,
+    title={
+    "text": ["Data Distribution by Day of Week, Marital Status, and Y (Cellular Contacts Only)"],
+    "subtitle" : ["Student Job Type"]}
+)
+#=======================Chart 3
+filtered_bank3 = bank.loc[(bank['contact'] == 'cellular') & (bank['marital'] != 'unknown') & (bank['job'] == 'retired')]
+
+# Compute value counts on the filtered DataFrame
+counts2 = filtered_bank3[['day_of_week', 'marital', 'y']].value_counts().reset_index()
+counts2.columns = ['day_of_week', 'marital', 'y', 'count']
+
+# Define the desired order of the categories
+day_order = ['mon', 'tue', 'wed', 'thu', 'fri']
+
+# Apply the order to the day_of_week column of the counts DataFrame
+counts2 = counts2.sort_values(by=['day_of_week'], key=lambda x: pd.Categorical(x, categories=day_order))
+
+# Create an Altair chart with the sorted x-axis
+chart1 = alt.Chart(counts2).mark_bar().encode(
+    x=alt.X('day_of_week:N', sort=day_order),
+    y='count:Q',
+    color='y:N',
+    column='marital:N'
+).properties(
+    width=100,
+    title={
+        "text":["Data Distribution by Day of Week, Marital Status, and Y (Cellular Contacts Only)"],
+        "subtitle":["Retired Job Type"]}
+)
 ```
 
 ```{python}
-#| include: include
 chart3
+```
+
+
+```{python}
+chart2
+```
+
+```{python}
+chart1
 ```
 ## Python Notebooks

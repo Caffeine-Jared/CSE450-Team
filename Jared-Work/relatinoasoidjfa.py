@@ -22,7 +22,7 @@ bank['day_of_week'].value_counts()
 
 #%%
 # Filter bank DataFrame to keep only rows where 'contact' is 'cellular'
-filtered_bank = bank.loc[(bank['contact'] == 'cellular') & (bank['marital'] != 'unknown')]
+filtered_bank = bank.loc[(bank['contact'] == 'cellular') & (bank['marital'] != 'unknown') & (bank['job'] == 'student')]
 
 # Compute value counts on the filtered DataFrame
 counts = filtered_bank[['day_of_week', 'marital', 'y']].value_counts().reset_index()
