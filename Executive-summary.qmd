@@ -67,7 +67,7 @@ _For our model, we decided to use the RandomForestClassifier which constructs mu
 
 ## Metrics
 
-We decided the most important metric is recall. We wanted to make sure we get as many yes's with the least amount of calls. Then precesion is the next important. The data we validated our model with included 3,707 pepole. Of those people we predicted that 3,456 would say no and 251 would say yes. We had a 28.7% recall and a 52.2% precision. This means that our model only got around 30% of the people that said yes. But over half of the people the model said was a yes, would actually agree to the campaign. So we weren't able to get all the people that would say yes, but we cut out over 3,100 calls out. So you would be able to save a lot of time and money cutting out all the other calls you would have been making.
+We decided the most important metric is recall. We wanted to make sure we get as many yes's with the least amount of calls. Then precesion is the next important. The data we validated our model with included 3,707 pepole. Of those people we predicted that 3,456 would say no and 251 would say yes. We had a 28.7% recall and a 52.2% precision. This means that our model only got around 30% of the people that said yes. But over half of the people the model said was a yes, would actually agree to the campaign. This means that every other person you call will agree to the campaign. So we weren't able to get all the people that would say yes, but we cut out over 3,100 calls out. So you would be able to save a lot of time and money cutting out all the other calls you would have been making.
 
 ```{python}
 #| label: Matrix
@@ -217,16 +217,16 @@ chart1 = alt.Chart(counts2).mark_bar().encode(
 ```
 
 ```{python}
-chart3
+#chart3
 ```
 _We wanted to see which of the two methods of contact would have the highest success rate from the marketing campaign. As you can see, Contacting people using a Cellular device would be more benificial than call those with a telephone. We also can see that Retired and Student have a 31.59% and 36.33% chance of a success rate._
 
 ```{python}
-chart2
+#chart2
 ```
 _Looking more into the Student side in which day would be best and to know if they were Divorced,Married, or Single had help drill in our target audience. Based on Single section, we can see that during the middle of the week has a higher chance of gaining a successful call. We also see that we gain nothing by calling Divorced Students._
 ```{python}
-chart1
+#chart1
 ```
 _Looking more into the Retired side, we also wanted to know which marital status would be best to call. The pattern for Retired and Students seems to be the same where they would be more successfull by calling in the middle of the week (Tueday through Thrursday) than any other week._
 
