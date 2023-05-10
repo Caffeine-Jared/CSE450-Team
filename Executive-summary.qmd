@@ -63,6 +63,7 @@ _._
 
 
 ## Tree
+For our model, we decided to use the RandomForestClassifier which constructs multiple decision trees during the training phase and then combines their predictions to produce more accurate and stable results. We augmented the RandomForestClassifier using hyperparameters which controlled certain aspects of the final decision tree, including the number of trees in the forest, the max depth of each tree, and the number of samples required to split an internal node. The hyperparameters are determined by using GridSearchCV, which will search over a specified parameter grid, and determine the best parameters by which we should control the decision tree.
 
 ## Metrics
 
