@@ -63,7 +63,7 @@ _._
 
 
 ## Tree
-For our model, we decided to use the RandomForestClassifier which constructs multiple decision trees during the training phase and then combines their predictions to produce more accurate and stable results. We augmented the RandomForestClassifier using hyperparameters which controlled certain aspects of the final decision tree, including the number of trees in the forest, the max depth of each tree, and the number of samples required to split an internal node. The hyperparameters are determined by using GridSearchCV, which will search over a specified parameter grid, and determine the best parameters by which we should control the decision tree.
+_For our model, we decided to use the RandomForestClassifier which constructs multiple decision trees during the training phase and then combines their predictions to produce more accurate and stable results. We augmented the RandomForestClassifier using hyperparameters which controlled certain aspects of the final decision tree, including the number of trees in the forest, the max depth of each tree, and the number of samples required to split an internal node. The hyperparameters are determined by using GridSearchCV, which will search over a specified parameter grid, and determine the best parameters by which we should control the decision tree._
 
 ## Metrics
 
@@ -125,13 +125,16 @@ clf.fit(X_train, y_train)
 # Test the random forest classifier
 y_pred = clf.predict(X_test)
 
+
+
+```
+
+```{python}
 disp = ConfusionMatrixDisplay.from_estimator(
   clf,
   X_test,
   y_test,
-  cmap=plt.cm.Blues,
-)
-
+  cmap=plt.cm.Blues,)
 plt.show()
 ```
 
@@ -214,13 +217,15 @@ chart1 = alt.Chart(counts2).mark_bar().encode(
 ```{python}
 chart3
 ```
-
+_We wanted to see which of the two methods of contact would have the highest success rate from the marketing campaign. As you can see, Contacting people using a Cellular device would be more benificial than call those with a telephone. We also can see that Retired and Student have a 31.59% and 36.33% chance of a success rate._
 
 ```{python}
 chart2
 ```
-
+_Looking more into the Student side in which day would be best and to know if they were Divorced,Married, or Single had help drill in our target audience. Based on Single section, we can see that during the middle of the week has a higher chance of gaining a successful call. We also see that we gain nothing by calling Divorced Students._
 ```{python}
 chart1
 ```
+_Looking more into the Retired side, we also wanted to know which marital status would be best to call. The pattern for Retired and Students seems to be the same where they would be more successfull by calling in the middle of the week (Tueday through Thrursday) than any other week._
+
 ## Python Notebooks
