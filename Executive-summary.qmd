@@ -37,13 +37,46 @@ bank = pd.read_csv(url_bank)
 
 ## Background
 
-_A major telemarketing campaign and the results were inadequete to come to a conclusion. We were assigned to impelment a Machine Learning Algorithim to help find the following:_
+_Banco Federal de Finanças ran a major telemarketing campaign and the results were inadequete and insufficient to come to a conclusion. Our data team at the bank were assigned to impelment a Machine Learning Algorithim to help us find Data that can help us understand our costumers and offer them a friendly and more direct treat based on their interests. Some of the things we were looking for in our data are:_
 
-_1. Find interesting customer segments based on their previous marketing campaign._
-_2. Find a way to identify the types of customers most likely to respond favorably to future marketing campaigns._
-_3.Proving to a skeptical Senhor Ferreira that a targeted campaign based on data science will significantly outperform a campaign made up of randomly selected customers._
+_1. interesting customer segments based on their previous marketing campaign._
+
+_2. A way to identify the types of customers most likely to respond favorably to future marketing campaigns._
+
+_3. Provide to a skeptical Senhor Ferreira that a targeted campaign based on data science will significantly outperform a campaign made up of randomly selected customers._
 
 _Since we're operating in the European Union, we're subject to GDPR compliance requirements. The GDPR doesn't apply in this situation, since we're just building a model, not selling data. In order to use this data under GDPR, we'll need to get consent from the customers in the dataset. We are also using only historic data that has been put into an anonymous format so we will be compliant in that department as well._
+
+_The core of our task is identifying those customers most likely to subscribe to a term deposit. This way, we can build a targeted marketing campaign that focuses primarily on those customers._ 
+
+_These shows a proportion of our costumers in Historical data that have said Yes, these are our targets_
+ 
+ ![Yes Proportion]("visualizstionY.png")
+ 
+
+```{python}
+import pandas as pd
+import altair as alt
+
+# Disable max rows limit
+alt.data_transformers.disable_max_rows()
+
+# Read data
+data = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bank.csv')
+
+# Create a pie chart
+chart = alt.Chart(data).mark_arc(innerRadius=0).encode(
+    theta=alt.Theta('y:N', aggregate='count'),
+    color='y:N'
+).properties(
+    width=300,
+    height=300
+)
+
+chart
+
+``` 
+
 
 ## Recommendation
 _._
