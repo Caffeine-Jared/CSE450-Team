@@ -264,3 +264,4 @@ _Looking more into the Student side in which day would be best and to know if th
 _Looking more into the Retired side, we also wanted to know which marital status would be best to call. The pattern for Retired and Students seems to be the same where they would be more successfull by calling in the middle of the week (Tueday through Thrursday) than any other week._
 
 ## Python Notebooks
+https://colab.research.google.com/drive/14Uwom0EJnURyfotBGxXZY3Cyx2sga4eJ?usp=sharing
