@@ -67,6 +67,8 @@ For our model, we decided to use the RandomForestClassifier which constructs mul
 
 ## Metrics
 
+We decided the most important metric is recall. We wanted to make sure we get as many yes's with the least amount of calls. Then precesion is the next important. The data we validated our model with included 3,707 pepole. Of those people we predicted that 3,456 would say no and 251 would say yes. We had a 28.7% recall and a 52.2% precision. This means that our model only got around 30% of the people that said yes. But over half of the people the model said was a yes, would actually agree to the campaign. So we weren't able to get all the people that would say yes, but we cut out over 3,100 calls out. So you would be able to save a lot of time and money cutting out all the other calls you would have been making.
+
 ```{python}
 #| label: Matrix
 #| include: false
