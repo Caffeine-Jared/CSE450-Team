@@ -56,7 +56,7 @@ param_grid = {
 clf = RandomForestClassifier(random_state=25, n_jobs=-1)
 
 # Create a GridSearchCV object
-grid_search = GridSearchCV(clf, param_grid, cv=5, n_jobs=-1)
+grid_search = GridSearchCV(clf, param_grid, cv=5, n_jobs=-1, scoring='precision', verbose=2)
 
 # Fit the grid search object to the data
 grid_search.fit(X_train_balanced, y_train_balanced)
