@@ -25,8 +25,8 @@ X = pd.get_dummies(clean[features], drop_first=True)
 #%%
 print(X.head())
 #%%
-y = clean['y']
-
+y = clean['y'].map({'no': 0, 'yes': 1})
+#%%
 # Train + test split
 X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 X_train, X_val, y_train, y_val = train_test_split(X_train_val, y_train_val, test_size=0.2, random_state=42)
@@ -44,24 +44,18 @@ param_grid = {
 
 clf = RandomForestClassifier(random_state=25, n_jobs=-1)
 
-scoring = {'recall': make_scorer(recall_score, pos_label='yes')}
-
-grid_search = GridSearchCV(clf, param_grid, cv=5, n_jobs=-1, scoring=scoring, refit='recall')
+grid_search = GridSearchCV(clf, param_grid, cv=5, n_jobs=-1, scoring='recall')
 
 grid_search.fit(X_train_balanced, y_train_balanced)
 
+# Get the best estimator
+best_model = grid_search.best_estimator_
+
 print("Best hyperparameters: ", grid_search.best_params_)
-print("Accuracy score: ", grid_search.best_score_)
+print("Recall score: ", grid_search.best_score_)
 
-clf = RandomForestClassifier(n_estimators=grid_search.best_params_['n_estimators'],
-                              max_depth=grid_search.best_params_['max_depth'],
-                              min_samples_split=grid_search.best_params_['min_samples_split'],
-                              min_samples_leaf=grid_search.best_params_['min_samples_leaf'],
-                              random_state=25, n_jobs=-1)
-
-clf.fit(X_train, y_train)
-
-y_pred = clf.predict(X_test)
+# Use the best model to make predictions
+y_pred = best_model.predict(X_test)
 
 report = classification_report(y_test, y_pred)
 print(report)
