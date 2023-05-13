@@ -1,0 +1,55 @@
+Mean Square Error: The mean squared error allows us to rank the performance of multiple models on a prediction problem with a continuous target. 
+    Mean squared error values fall in the range [0, ∞], and smaller values indicate better model performance.
+One complaint that is often leveled against mean squared error is that,
+    although it can be used to effectively rank models,
+    the actual mean squared error values themselves are not especially meaningful in relation to the scenario that a model is being used for.
+    For example, in the drug dosage prediction problem,
+    we cannot say by how many milligrams we expect the model to be incorrect based on the mean squared error values.
+
+Root Mean Square Error: The root mean squared error is calculated as the square root of the mean squared error.
+    Root mean squared error values are in the same units as the target value and so allow us to say something more meaningful about what the error for predictions made by the model will be. 
+    For example, for the drug dosage prediction problem, the root mean squared error value is 1.380 for the regression model and 2.096 for the nearest neighbor model. 
+    This means that we can expect the predictions made by the regression model to be 1.38mg out on average, 
+    whereas those made by the nearest neighbor model will be, on average, 2.096mg out.
+
+    Due to the inclusion of the squared term,
+    the root mean squared error tends to overestimate error slightly as it overemphasizes individual large errors.
+
+Mean Absolute Error: The mean absolute error is calculated as the average of the absolute errors between predictions and actual values.
+    Caluated where the terms in the equation have the same meaning as before, 
+    and abs refers to the absolute value. 
+    Mean absolute error values fall in the range [0, ∞], 
+    and smaller values indicate better model performance.
+
+
+The R 2 coefficient is a domain independent measure of model performance that is frequently used for prediction problems with a continuous target. 
+    The R 2 coefficient compares the performance of a model on a test set with the performance of an imaginary model that always predicts the average values from the test set.
+    The R 2 coefficient is calculated as follows: where the sum of squared errors is computed using Equation squares is given by,and the total sum of squares is given by,
+    R 2 coefficient values fall in the range The average target value for the drug [0, dosage 1) and larger values indicate the prediction test set given in better performance. 
+    A proper interpretation of the R 2 coefficient is the amount of variation target feature that is explained by the defining features in the model.
+    Using this, 
+    the R 2 coefficient for the regression model can be calculated as 0.889 and for the nearest neighbor model as 0.776. 
+    
+    This leads to the same conclusion with regard to model ranking as the root mean squared error measures: namely, 
+    that the regression model has better performance on this task than the nearest neighbor model. 
+    The R 2 coefficient has the advantage in general, 
+    however, that it allows assessment of model performance in a domain independent way.
+
+Model Ensembles
+Rather than creating a single model, 
+    they generate a set of models and then make predictions by aggregating the outputs of these models. 
+    A prediction model that is composed of a set of models is called a model ensemble.
+
+There are two defining characteristics of ensemble models: 
+    1. They build multiple different models from the same dataset by inducing each model using a modified version of the dataset. 
+    2. They make a prediction by aggregating the predictions of the different models in the ensemble. For categorical target features, 
+        this can be done using different types of voting mechanisms, 
+        and for continuous target features, 
+        this can be done using a measure of the central tendency of the different model predictions, 
+        such as the mean or the median.
+
+There are two standard approaches to creating remainder of this section explains each of these. ensembles: boosting and bagging. 
+    The first approach, boosting, is a sequential approach that builds models one at a time, 
+    where each new model is trained to correct the errors made by the previous ones. 
+    The second approach, bagging, is a parallel approach that builds models independently of each other, 
+    where each model is trained on a different subset of the training data.
