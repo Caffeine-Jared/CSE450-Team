@@ -7,6 +7,7 @@ clean.head()
 
 #%%
 from sklearn import tree
+from sklearn.utils import shuffle, resample
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import OneHotEncoder
