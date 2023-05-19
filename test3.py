@@ -7,20 +7,17 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from sklearn.metrics import r2_score
 import numpy as np
-from skopt import BayesSearchCV
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
 from tune_sklearn import TuneGridSearchCV
-from skopt.space import Real, Integer, Categorical
+# from google.colab import drive
 
-from google.colab import drive
+# # Mount Google Drive
+# drive.mount('/content/drive')
 
-# Mount Google Drive
-drive.mount('/content/drive')
-
-# output path is ONLY to a file - this can't be used a subdirectory
-output_path = '/content/drive/MyDrive/Project_2/output.txt'
+# # output path is ONLY to a file - this can't be used a subdirectory
+# output_path = '/content/drive/MyDrive/Project_2/output.txt'
 
 housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 
@@ -74,10 +71,10 @@ X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
 model = XGBRegressor(tree_method='gpu_hist', predictor='gpu_predictor')
 
 # define parameters to search
-search_space = {
-    'n_estimators': Integer(50, 1000),  # Assuming the interval you are interested in is from 50 to 1000
-    'max_depth': Integer(6, 30),  # Assuming the interval you are interested in is from 6 to 30
-    'learning_rate': Real(0.01, 0.3, 'log-uniform'),  # Assuming you are interested in a log-uniform distribution from 0.01 to 0.3
+param_grid = {
+    'n_estimators': [50, 100, 200, 250, 300, 500, 1000],
+    'max_depth': [6, 10, 15, 20, 25, 30],
+    'learning_rate': [0.01, 0.1, 0.3, 0.5],
 }
 
 # define target values - these are the values we want to reach (potentially)
@@ -93,7 +90,7 @@ r2 = 0
 # loop until we reach target values
 while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     # define grid search - scoring is negative mean squared error, cv=3 is 3-fold cross validation, n_jobs=-1 is to use all processors
-    grid_search = BayesSearchCV(estimator=model, search_spaces=search_space, cv=3, scoring='neg_mean_squared_error')
+    grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring='neg_mean_squared_error', n_jobs=-1, verbose=2)
     grid_search.fit(X_train, y_train)
 
     feature_importance = grid_search.best_estimator_.feature_importances_
@@ -130,7 +127,7 @@ while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     print("\n")
     
     # write results to file - append to file
-    with open(output_path, 'a') as f:
+    with open('output.txt', 'a') as f:
         print("Number of features: ", n, file=f)
         print("Top features: ", top_features, file=f)
         print("Mean Absolute Error: " + str(mae), file=f)
