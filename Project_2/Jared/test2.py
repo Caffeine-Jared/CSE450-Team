@@ -75,13 +75,11 @@ mae = float('inf')
 rmse = float('inf')
 r2 = 0
 
-with open('output.txt', 'w') as f:
+while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     for n in range(1, len(X.columns) + 1):
-        if mae <= target_mae and rmse <= target_rmse and r2 >= target_r2:
-            break
-        print("Number of features: ", n, file=f)
+        print("Number of features: ", n)
         top_features = importance_df['Feature'].head(n).tolist()
-        print("Top features: ", top_features, file=f)
+        print("Top features: ", top_features)
         X_train_selected = X_train[top_features]
         X_val_selected = X_val[top_features]
         X_test_selected = X_test[top_features]
@@ -90,9 +88,19 @@ with open('output.txt', 'w') as f:
 
         y_pred = grid_search.predict(X_test_selected)
         mae = mean_absolute_error(y_pred, y_test)
-        print("Mean Absolute Error: " + str(mae), file=f)
+        print("Mean Absolute Error: " + str(mae))
         rmse = sqrt(mean_squared_error(y_test, y_pred))
-        print("Root Mean Squared Error: " + str(rmse), file=f)
+        print("Root Mean Squared Error: " + str(rmse))
         r2 = r2_score(y_test, y_pred)
-        print("R-squared: " + str(r2), file=f)
-        print("\n", file=f)
+        print("R-squared: " + str(r2))
+        print("\n")
+        
+        with open('output.txt', 'a') as f:
+            print("Number of features: ", n, file=f)
+            print("Top features: ", top_features, file=f)
+            print("Mean Absolute Error: " + str(mae), file=f)
+            print("Root Mean Squared Error: " + str(rmse), file=f)
+            print("R-squared: " + str(r2), file=f)
+            print("\n", file=f)
+        if mae <= target_mae and rmse <= target_rmse and r2 >= target_r2:
+            break
