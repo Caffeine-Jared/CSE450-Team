@@ -7,6 +7,7 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from sklearn.metrics import r2_score
 import numpy as np
+from sklearn.preprocessing import OneHotEncoder
 
 housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 
@@ -32,6 +33,11 @@ housing['day'] = pd.to_datetime(housing['date']).dt.day
 
 housing = housing.drop('date', axis=1)
 
+# Bin sqft_product into different categories
+housing['sqft_product_bins'] = pd.qcut(housing['sqft_product'], q=3, labels=['small_properties', 'medium_properties', 'large_properties'])
+
+housing = pd.get_dummies(housing, columns=['sqft_product_bins'])
+
 X = housing.drop('price', axis=1)
 y = housing['price']
 
@@ -49,31 +55,25 @@ param_grid = {
 grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, n_jobs=-1, scoring='neg_mean_squared_error')
 grid_search.fit(X_train, y_train)
 
-# Get feature importance
 feature_importance = grid_search.best_estimator_.feature_importances_
 
-# Create a pandas DataFrame with the feature importance
 importance_df = pd.DataFrame({
     'Feature': X.columns,
     'Importance': feature_importance
 })
 
-# Sort the DataFrame by the importance in descending order
+# FIRST SUB-100k features: Top features:  ['grade', 'waterfront', 'sqft_living', 'Amazon_HQ_distance', 'lat', 'view', 'Starbucks_distance', 'Boeing_Plant_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
 importance_df = importance_df.sort_values('Importance', ascending=False)
 
-# Select top-n features
-n = 10
+n = 25
 top_features = importance_df['Feature'].head(n).tolist()
 
-# Print the top features
 print("Top features: ", top_features)
 
-# Select these features from your dataset
 X_train_selected = X_train[top_features]
 X_val_selected = X_val[top_features]
 X_test_selected = X_test[top_features]
 
-# Refit the model on the selected features
 grid_search.fit(X_train_selected, y_train)
 
 y_pred = grid_search.predict(X_test_selected)
