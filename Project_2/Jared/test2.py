@@ -65,11 +65,23 @@ importance_df = pd.DataFrame({
 # FIRST SUB-100k features: Top features:  ['grade', 'waterfront', 'sqft_living', 'Amazon_HQ_distance', 'lat', 'view', 'Starbucks_distance', 'Boeing_Plant_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
 importance_df = importance_df.sort_values('Importance', ascending=False)
 
-with open('output.txt', 'a') as f:
+# Define the thresholds
+target_mae = 10000
+target_rmse = 50000
+target_r2 = 0.95
+
+# Initialize the performance metrics
+mae = float('inf')
+rmse = float('inf')
+r2 = 0
+
+with open('output.txt', 'w') as f:
     for n in range(1, len(X.columns) + 1):
+        if mae <= target_mae and rmse <= target_rmse and r2 >= target_r2:
+            break
         print("Number of features: ", n, file=f)
         top_features = importance_df['Feature'].head(n).tolist()
-
+        print("Top features: ", top_features, file=f)
         X_train_selected = X_train[top_features]
         X_val_selected = X_val[top_features]
         X_test_selected = X_test[top_features]
@@ -77,10 +89,10 @@ with open('output.txt', 'a') as f:
         grid_search.fit(X_train_selected, y_train)
 
         y_pred = grid_search.predict(X_test_selected)
-        print("Mean Absolute Error: " + str(mean_absolute_error(y_pred, y_test)), file=f)
+        mae = mean_absolute_error(y_pred, y_test)
+        print("Mean Absolute Error: " + str(mae), file=f)
         rmse = sqrt(mean_squared_error(y_test, y_pred))
         print("Root Mean Squared Error: " + str(rmse), file=f)
         r2 = r2_score(y_test, y_pred)
         print("R-squared: " + str(r2), file=f)
         print("\n", file=f)
-
