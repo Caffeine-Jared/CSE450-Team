@@ -65,21 +65,22 @@ importance_df = pd.DataFrame({
 # FIRST SUB-100k features: Top features:  ['grade', 'waterfront', 'sqft_living', 'Amazon_HQ_distance', 'lat', 'view', 'Starbucks_distance', 'Boeing_Plant_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
 importance_df = importance_df.sort_values('Importance', ascending=False)
 
-n = 25
-top_features = importance_df['Feature'].head(n).tolist()
+with open('output.txt', 'a') as f:
+    for n in range(1, len(X.columns) + 1):
+        print("Number of features: ", n, file=f)
+        top_features = importance_df['Feature'].head(n).tolist()
 
-print("Top features: ", top_features)
+        X_train_selected = X_train[top_features]
+        X_val_selected = X_val[top_features]
+        X_test_selected = X_test[top_features]
 
-X_train_selected = X_train[top_features]
-X_val_selected = X_val[top_features]
-X_test_selected = X_test[top_features]
+        grid_search.fit(X_train_selected, y_train)
 
-grid_search.fit(X_train_selected, y_train)
+        y_pred = grid_search.predict(X_test_selected)
+        print("Mean Absolute Error: " + str(mean_absolute_error(y_pred, y_test)), file=f)
+        rmse = sqrt(mean_squared_error(y_test, y_pred))
+        print("Root Mean Squared Error: " + str(rmse), file=f)
+        r2 = r2_score(y_test, y_pred)
+        print("R-squared: " + str(r2), file=f)
+        print("\n", file=f)
 
-y_pred = grid_search.predict(X_test_selected)
-print(y_pred)
-print("Mean Absolute Error: " + str(mean_absolute_error(y_pred, y_test)))
-rmse = sqrt(mean_squared_error(y_test, y_pred))
-print("Root Mean Squared Error: " + str(rmse))
-r2 = r2_score(y_test, y_pred)
-print("R-squared: " + str(r2))
