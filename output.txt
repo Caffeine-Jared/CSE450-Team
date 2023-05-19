@@ -1,0 +1,161 @@
+Number of features:  1
+Top features:  ['grade']
+Mean Absolute Error: 164125.71071875
+Root Mean Squared Error: 247113.9462652851
+R-squared: 0.5505776715687576
+
+
+Number of features:  2
+Top features:  ['grade', 'sqft_living']
+Mean Absolute Error: 151062.401453125
+Root Mean Squared Error: 235846.82080765226
+R-squared: 0.5906260665771992
+
+
+Number of features:  3
+Top features:  ['grade', 'sqft_living', 'waterfront']
+Mean Absolute Error: 148147.5672578125
+Root Mean Squared Error: 217808.93551108596
+R-squared: 0.6508504246928457
+
+
+Number of features:  4
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance']
+Mean Absolute Error: 101057.96290625
+Root Mean Squared Error: 151954.79645301847
+R-squared: 0.8300626039169718
+
+
+Number of features:  5
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat']
+Mean Absolute Error: 75525.4494375
+Root Mean Squared Error: 121618.60483283705
+R-squared: 0.891142046073858
+
+
+Number of features:  6
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view']
+Mean Absolute Error: 72367.5831328125
+Root Mean Squared Error: 116585.5218593619
+R-squared: 0.8999655991850651
+
+
+Number of features:  7
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above']
+Mean Absolute Error: 72892.75090625
+Root Mean Squared Error: 118678.63964669064
+R-squared: 0.8963414207131458
+
+
+Number of features:  8
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance']
+Mean Absolute Error: 71253.3111484375
+Root Mean Squared Error: 116349.95916333047
+R-squared: 0.9003694326405711
+
+
+Number of features:  9
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance']
+Mean Absolute Error: 69705.7373671875
+Root Mean Squared Error: 113667.7021945291
+R-squared: 0.9049101210305509
+
+
+Number of features:  10
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15']
+Mean Absolute Error: 72454.28762890626
+Root Mean Squared Error: 119333.08666283588
+R-squared: 0.895195029154954
+
+
+Number of features:  11
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance']
+Mean Absolute Error: 67742.66166796874
+Root Mean Squared Error: 110648.8994905138
+R-squared: 0.9098938713940441
+
+
+Number of features:  12
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product']
+Mean Absolute Error: 66506.59496875
+Root Mean Squared Error: 107355.48155464693
+R-squared: 0.9151779856640294
+
+
+Number of features:  13
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year']
+Mean Absolute Error: 65381.6294453125
+Root Mean Squared Error: 105690.7059946728
+R-squared: 0.9177882806642708
+
+
+Number of features:  14
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built']
+Mean Absolute Error: 64319.36384375
+Root Mean Squared Error: 105700.46414334165
+R-squared: 0.9177730991739751
+
+
+Number of features:  15
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated']
+Mean Absolute Error: 64013.4378046875
+Root Mean Squared Error: 105862.33205669856
+R-squared: 0.9175210645544002
+
+
+Number of features:  16
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode']
+Mean Absolute Error: 63013.12146875
+Root Mean Squared Error: 104052.07514210878
+R-squared: 0.9203177433843337
+
+
+Number of features:  17
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long']
+Mean Absolute Error: 63449.7399765625
+Root Mean Squared Error: 104313.48945553301
+R-squared: 0.91991686241173
+
+
+Number of features:  18
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long', 'condition']
+Mean Absolute Error: 61198.341171875
+Root Mean Squared Error: 100427.88687593481
+R-squared: 0.9257718250795746
+
+
+Number of features:  19
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long', 'condition', 'sqft_lot']
+Mean Absolute Error: 61382.5525078125
+Root Mean Squared Error: 102541.4926345111
+R-squared: 0.9226145338684851
+
+
+Number of features:  20
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long', 'condition', 'sqft_lot', 'sqft_basement']
+Mean Absolute Error: 61742.94346875
+Root Mean Squared Error: 102072.48381142621
+R-squared: 0.9233208131091024
+
+
+Number of features:  21
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long', 'condition', 'sqft_lot', 'sqft_basement', 'sqft_lot15']
+Mean Absolute Error: 61535.6046484375
+Root Mean Squared Error: 101438.5008854551
+R-squared: 0.9242703799720455
+
+
+Number of features:  22
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long', 'condition', 'sqft_lot', 'sqft_basement', 'sqft_lot15', 'bathrooms']
+Mean Absolute Error: 61042.1043203125
+Root Mean Squared Error: 100868.23292036538
+R-squared: 0.9251194616066993
+
+
+Number of features:  23
+Top features:  ['grade', 'sqft_living', 'waterfront', 'Amazon_HQ_distance', 'lat', 'view', 'sqft_above', 'Boeing_Plant_distance', 'Starbucks_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'year', 'yr_built', 'yr_renovated', 'zipcode', 'long', 'condition', 'sqft_lot', 'sqft_basement', 'sqft_lot15', 'bathrooms', 'floors']
+Mean Absolute Error: 60459.812578125
+Root Mean Squared Error: 100089.79414382645
+R-squared: 0.9262707654457121
+
+
