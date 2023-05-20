@@ -60,7 +60,7 @@ X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
 
 # define model - alpha=1.0 is default
-model = XGBRegressor()
+model = XGBRegressor(tree_method='gpu_hist', predictor='gpu_predictor', objective="reg:squarederror")
 
 # define parameters to search
 param_grid = {
@@ -82,7 +82,7 @@ r2 = 0
 # loop until we reach target values
 while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     # define grid search - scoring is negative mean squared error, cv=3 is 3-fold cross validation, n_jobs=-1 is to use all processors
-    grid_search = TuneGridSearchCV(estimator=model, param_grid=param_grid, cv=3, n_jobs=-1, scoring='neg_mean_squared_error')
+    grid_search = GridSearchCV(estimator=model, param_grid=param_grid, scoring='neg_mean_squared_error')
     grid_search.fit(X_train, y_train)
 
     feature_importance = grid_search.best_estimator_.feature_importances_
