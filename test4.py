@@ -7,9 +7,19 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from sklearn.metrics import r2_score
 import numpy as np
+from skopt import BayesSearchCV
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
-from tune_sklearn import TuneGridSearchCV
+from tune_sklearn import TuneSearchCV
+import joblib
+# from google.colab import drive
+
+# # # Mount Google Drive
+# drive.mount('/content/drive')
+
+# # # output path is ONLY to a file - this can't be used a subdirectory
+# output_path = '/content/drive/MyDrive/Project_2/output.txt'
 
 housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 
@@ -60,13 +70,13 @@ X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
 X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
 
 # define model - alpha=1.0 is default
-model = XGBRegressor(tree_method='gpu_hist', predictor='gpu_predictor', objective="reg:squarederror")
+model = XGBRegressor(tree_method='gpu_hist', predictor='gpu_predictor')
 
 # define parameters to search
 param_grid = {
-    'n_estimators': [50, 100, 200, 250, 300],
+    'n_estimators': [50, 100, 200, 250, 300, 500, 1000],
     'max_depth': [6, 10, 15, 20, 25, 30],
-    'learning_rate': [0.01, 0.1, 0.3],
+    'learning_rate': [0.01, 0.1, 0.3, 0.5],
 }
 
 # define target values - these are the values we want to reach (potentially)
@@ -82,7 +92,7 @@ r2 = 0
 # loop until we reach target values
 while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     # define grid search - scoring is negative mean squared error, cv=3 is 3-fold cross validation, n_jobs=-1 is to use all processors
-    grid_search = GridSearchCV(estimator=model, param_grid=param_grid, scoring='neg_mean_squared_error')
+    grid_search = BayesSearchCV(estimator=model, param_grid=param_grid, scoring='neg_mean_squared_error', verbose=2)
     grid_search.fit(X_train, y_train)
 
     feature_importance = grid_search.best_estimator_.feature_importances_
@@ -93,7 +103,7 @@ while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     })
 
     # FIRST SUB-100k features: Top features:  ['grade', 'waterfront', 'sqft_living', 'Amazon_HQ_distance', 'lat', 'view', 'Starbucks_distance', 'Boeing_Plant_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
-    # importance_df - 22 features -  go
+    # importance_df - 22 features 
     importance_df = importance_df.sort_values('Importance', ascending=False)
     n = 22
     top_features = importance_df['Feature'].head(n).tolist()
@@ -120,6 +130,7 @@ while mae > target_mae or rmse > target_rmse or r2 < target_r2:
     
     # write results to file - append to file
     with open('output.txt', 'a') as f:
+        print("final results", file=f)
         print("Number of features: ", n, file=f)
         print("Top features: ", top_features, file=f)
         print("Mean Absolute Error: " + str(mae), file=f)
