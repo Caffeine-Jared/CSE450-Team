@@ -1,0 +1,27 @@
+Score
+r2   = 0.9016896968361999
+rmse = 111852.4397132198
+Holdout
+r2   = 0.43156014168389367
+rmse = 189848.28132647308
+
+Features
+floors
+sqft_lot
+view
+sqft_living
+sqft_lot15
+grade
+bedrooms
+yr_built
+condition
+Microsoft_distance
+yr_renovated
+sqft_product
+sqft_basement
+sqft_living15
+waterfront
+Amazon_HQ_distance
+zipcode
+lat
+long

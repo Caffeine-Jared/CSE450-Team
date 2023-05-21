@@ -1,0 +1,27 @@
+Score
+r2   = 0.8961142830762622
+rmse = 114980.41299818864
+Holdout
+r2   = 0.4565750684080464
+rmse = 220136.1115013531
+
+Features
+bedrooms
+floors
+Boeing_Plant_distance
+Starbucks_distance
+waterfront
+yr_renovated
+bathrooms
+Amazon_HQ_distance
+condition
+sqft_lot15
+sqft_lot
+sqft_living
+grade
+sqft_living15
+view
+sqft_basement
+zipcode
+lat
+long
