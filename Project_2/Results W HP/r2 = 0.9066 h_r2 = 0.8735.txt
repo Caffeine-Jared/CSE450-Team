@@ -1,0 +1,25 @@
+Score
+r2   = 0.9065593463455305
+rmse = 109047.03901692343
+Holdout
+r2   = 0.8734691018011449
+rmse = 90683.3466276181
+7
+0.09
+
+Features
+condition
+sqft_basement
+sqft_living
+yr_renovated
+sqft_lot15
+yr_built
+zipcode
+lat
+long
+waterfront
+sqft_lot
+sqft_above
+view
+grade
+sqft_living15

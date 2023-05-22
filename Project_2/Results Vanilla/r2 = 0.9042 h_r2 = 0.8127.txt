@@ -1,0 +1,21 @@
+Score
+r2   = 0.9041821460107017
+rmse = 110425.44639232584
+Holdout
+r2   = 0.8127262068085976
+rmse = 105888.809745868
+
+Features
+bathrooms
+sqft_living
+condition
+floors
+zipcode
+lat
+long
+waterfront
+sqft_lot
+sqft_above
+view
+grade
+sqft_living15

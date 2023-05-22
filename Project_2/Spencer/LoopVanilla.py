@@ -12,7 +12,7 @@ import os
 
 
 
-save_folder = r'C:\Users\dogeb\Documents\GitHub\CSE450-Team\Project_2\Results Vanilla'
+save_folder = r'C:\Users\dogeb\Documents\GitHub\CSE450-Team\Project_2\Results W HP'
 best_r2_so_far = [.88,.88,.88,.88,.88]
 count = 0
 count_all = 0
@@ -67,8 +67,16 @@ while True:
     dtest = xgb.DMatrix(X_test, label=y_test)
     dhold = xgb.DMatrix(X_holdout, label=y_holdout)
 
-    reg_params = {'max_depth': 9,
-              'learning_rate': 0.1,
+    #9,0.1
+    depth = ['7','8','9','10','11','12','13','14','15']
+    rate = ['0.01','0.02','0.03','0.04','0.05','0.06','0.07','0.08','0.09','0.1']
+    max_depth = random.sample(depth, 1)
+    learning_rate = random.sample(rate, 1)
+    max_depth = str(max_depth).strip("'[]'")
+    learning_rate = str(learning_rate).strip("'[]'")
+
+    reg_params = {'max_depth': max_depth,
+              'learning_rate': learning_rate,
               'eval_metric': 'rmse',
               'random_state': 25,
               'tree_method': 'gpu_hist',
@@ -99,7 +107,9 @@ while True:
             text = text + 'rmse = ' + str(rmse) + '\n'
             text = text + 'Holdout\n'
             text = text + 'r2   = ' + str(h_r2) + '\n'
-            text = text + 'rmse = ' + str(h_rmse) + '\n\n'
+            text = text + 'rmse = ' + str(h_rmse) + '\n'
+            text = text + max_depth + '\n'
+            text = text + learning_rate + '\n\n'
             text = text + 'Features\n'
 
             for f in features:

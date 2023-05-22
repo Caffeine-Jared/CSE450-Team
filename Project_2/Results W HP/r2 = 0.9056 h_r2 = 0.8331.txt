@@ -1,0 +1,21 @@
+Score
+r2   = 0.9055907066847616
+rmse = 109610.79231815453
+Holdout
+r2   = 0.8331297860682368
+rmse = 99142.78171891431
+7
+0.08
+
+Features
+condition
+sqft_living
+zipcode
+lat
+long
+waterfront
+sqft_lot
+sqft_above
+view
+grade
+sqft_living15
