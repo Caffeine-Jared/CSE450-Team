@@ -1,0 +1,22 @@
+Score
+val1 r2   = 0.9013277365835669
+val2 r2   = 0.9161951085058291
+avg  r2   = 0.908761422544698
+test r2   = 0.9138379863203268
+hold r2   = 0.8210339871002994
+
+rounds    = 200
+
+Features
+yr_built
+sqft_living
+sqft_basement
+zipcode
+lat
+long
+waterfront
+sqft_lot
+sqft_above
+view
+grade
+sqft_living15
