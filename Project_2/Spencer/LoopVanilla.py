@@ -43,16 +43,14 @@ while True:
     X_holdout = holdout[features]
     y_holdout = holdout_target['price']
 
-    # 70/10/10/10 Split
+    # 80/10/10 Split
     # Train/Val/Double Check/Test
     X_train, X_set, y_train, y_set = train_test_split(X, y, test_size=0.2, random_state=25)
-    X_val, X_set2, y_val, y_set2 = train_test_split(X_set, y_set, test_size=0.33, random_state=25)
-    X_val2, X_test, y_val2, y_test = train_test_split(X_set2, y_set2, test_size=0.5, random_state=25)
+    X_val, X_test, y_val, y_test = train_test_split(X_set, y_set, test_size=0.33, random_state=25)
 
     # XGB Matrix creations for train/val/val2/test/hold
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dval = xgb.DMatrix(X_val, label=y_val)
-    dval2 = xgb.DMatrix(X_val2, label=y_val2)
     dtest = xgb.DMatrix(X_test, label=y_test)
     dhold = xgb.DMatrix(X_holdout, label=y_holdout)
 
@@ -78,21 +76,19 @@ while True:
     num_boost_round = random.sample(rounds, 1)
     num_boost_round = str(num_boost_round).strip("'[]'")
     model = xgb.train(reg_params, dtrain, int(num_boost_round))
-    y_pred1 = model.predict(dval)
-    y_pred2 = model.predict(dval2)
+    y_pred = model.predict(dval)
+
 
     # Validate Model
-    first_r2 = r2_score(y_val, y_pred1)
-    second_r2 = r2_score(y_val2, y_pred2)
-    avg_val = (first_r2 + second_r2) / 2
+    r2 = r2_score(y_val, y_pred)
 
     count_all += 1
     print(count_all)
 
-    if avg_val > best_r2_so_far:
+    if r2 > best_r2_so_far:
 
         # Document best score
-        best_r2_so_far = avg_val
+        best_r2_so_far = r2
         count += 1
 
         # Get Test and Holdout scores
@@ -112,6 +108,8 @@ while True:
         text = text + 'avg  r2   = ' + str(avg_val) + '\n'
         text = text + 'test r2   = ' + str(test_r2) + '\n'
         text = text + 'hold r2   = ' + str(h_r2) + '\n\n'
+        text = text + 'depth     = ' + str(max_depth) + '\n'
+        text = text + 'rate      = ' + str(rate) + '\n'
         text = text + 'rounds    = ' + str(num_boost_round) + '\n\n'
         text = text + 'Features\n'
 
