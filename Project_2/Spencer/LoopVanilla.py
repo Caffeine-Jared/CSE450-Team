@@ -103,20 +103,18 @@ while True:
         # Make text file
         print(f'got one! Number {count}')
         text = 'Score\n'
-        text = text + 'val1 r2   = ' + str(first_r2) + '\n'
-        text = text + 'val2 r2   = ' + str(second_r2) + '\n'
-        text = text + 'avg  r2   = ' + str(avg_val) + '\n'
+        text = text + 'val1 r2   = ' + str(r2) + '\n'
         text = text + 'test r2   = ' + str(test_r2) + '\n'
         text = text + 'hold r2   = ' + str(h_r2) + '\n\n'
         text = text + 'depth     = ' + str(max_depth) + '\n'
-        text = text + 'rate      = ' + str(rate) + '\n'
+        text = text + 'rate      = ' + str(learning_rate) + '\n'
         text = text + 'rounds    = ' + str(num_boost_round) + '\n\n'
         text = text + 'Features\n'
 
         for f in features:
             text = text + f + '\n'
 
-        file_name = 'avg_r2 = ' + str(format(float(avg_val),".4f")) + '  1_r2 = ' + str(format(float(first_r2),".4f")) + '  2_r2 = ' + str(format(float(second_r2),".4f")) + '.txt'
+        file_name = 'r2 = ' + str(format(float(r2),".6f")) + '.txt'
 
         # Specify the file name and path
         file_path = os.path.join(save_folder, file_name)
