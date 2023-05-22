@@ -25,25 +25,6 @@ run = neptune.init_run(
 #load in data for housing from seattle
 housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 
-# add built_after_1976 column to dataframe - hot encode it
-housing['built_after_1976'] = (housing['yr_built'] > 1976).astype(int)
-
-# calculate distance from each location
-def calculate_distance(lat1, lon1, lat2, lon2):
-    return geodesic((lat1, lon1), (lat2, lon2)).miles
-
-
-locations = {
-    "Amazon_HQ": (47.62246, -122.336775),
-    "Microsoft": (47.64429, -122.12518),
-    "Starbucks": (47.580463, -122.335897),
-    "Boeing_Plant": (47.543969, -122.316443)
-}
-
-# add distance columns to dataframe
-for name, coords in locations.items():
-    housing[name + '_distance'] = housing.apply(lambda row: calculate_distance(row['lat'], row['long'], coords[0], coords[1]), axis=1)
-
 # add sqft_product, year, month, and day columns to dataframe
 housing['sqft_product'] = housing['sqft_living'] * housing['sqft_lot']
 housing['year'] = pd.to_datetime(housing['date']).dt.year

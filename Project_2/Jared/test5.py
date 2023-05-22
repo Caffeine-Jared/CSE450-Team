@@ -28,24 +28,6 @@ import seaborn as sns
 # load in data for housing from Seattle
 housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 
-# add built_after_1976 column to dataframe - hot encode it
-housing['built_after_1976'] = (housing['yr_built'] > 1976).astype(int)
-
-# calculate distance from each location
-def calculate_distance(lat1, lon1, lat2, lon2):
-    return geodesic((lat1, lon1), (lat2, lon2)).miles
-
-locations = {
-    "Amazon_HQ": (47.62246, -122.336775),
-    "Microsoft": (47.64429, -122.12518),
-    "Starbucks": (47.580463, -122.335897),
-    "Boeing_Plant": (47.543969, -122.316443)
-}
-
-# add distance columns to dataframe
-for name, coords in locations.items():
-    housing[name + '_distance'] = housing.apply(lambda row: calculate_distance(row['lat'], row['long'], coords[0], coords[1]), axis=1)
-
 # add sqft_product, year, month, and day columns to dataframe
 housing['sqft_product'] = housing['sqft_living'] * housing['sqft_lot']
 housing['year'] = pd.to_datetime(housing['date']).dt.year
@@ -55,16 +37,9 @@ housing['day'] = pd.to_datetime(housing['date']).dt.day
 # drop date column
 housing = housing.drop('date', axis=1)
 
-# Bin sqft_product into different categories
-housing['sqft_product_bins'] = pd.qcut(housing['sqft_product'], q=3, labels=['small_properties', 'medium_properties', 'large_properties'])
-
-# hot encode sqft_product_bins
-housing = pd.get_dummies(housing, columns=['sqft_product_bins'])
-
 # create X and y - drop price from X
 X = housing.drop('price', axis=1)
 y = housing['price']
-
 
 #%%
 
@@ -126,7 +101,7 @@ plt.show()
 #%%
 
 fig, ax = plt.subplots(11, 2, figsize=(20, 50))  # Adjust to create 22 subplots
-columns = ['grade', 'waterfront', 'sqft_living', 'Amazon_HQ_distance', 'lat', 'view', 'Starbucks_distance', 'Boeing_Plant_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
+columns = 
 k = 0
 for i in range(11):  # Loop over 11 rows
     for j in range(2):  # Loop over 2 columns
@@ -140,7 +115,7 @@ plt.show()
 #%%
 
 fig, axs = plt.subplots(ncols=2, nrows=11, figsize=(20, 50))  # Adjust to create 22 subplots
-columns = ['grade', 'waterfront', 'sqft_living', 'Amazon_HQ_distance', 'lat', 'view', 'Starbucks_distance', 'Boeing_Plant_distance', 'sqft_living15', 'Microsoft_distance', 'sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
+columns = ['grade', 'waterfront', 'sqft_living', 'lat', 'view','sqft_living15','sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
 index = 0
 axs = axs.flatten()
 for k in columns:
