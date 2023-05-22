@@ -1,0 +1,7 @@
+{"obj": {"type": "AssignString", "path": ["sys", "name"], "value": "Untitled"}, "version": 1}
+{"obj": {"type": "AssignString", "path": ["sys", "description"], "value": ""}, "version": 2}
+{"obj": {"type": "AssignString", "path": ["monitoring", "b77fdc57", "hostname"], "value": "DESKTOP-RT0NA4L"}, "version": 3}
+{"obj": {"type": "AssignString", "path": ["sys", "hostname"], "value": "DESKTOP-RT0NA4L"}, "version": 4}
+{"obj": {"type": "AssignString", "path": ["monitoring", "b77fdc57", "pid"], "value": "25180"}, "version": 5}
+{"obj": {"type": "AssignString", "path": ["monitoring", "b77fdc57", "tid"], "value": "19352"}, "version": 6}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": false}, "version": 7}
