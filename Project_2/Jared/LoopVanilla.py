@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 import numpy as np
 import xgboost as xgb
@@ -9,8 +10,9 @@ from sklearn.metrics import accuracy_score, mean_squared_error, r2_score
 import math
 import random
 import os
+import seaborn as sns
 
-
+#%%
 
 save_folder = r'C:\Users\jared\Documents\GitHub\CSE450-Team\Project_2\Results Vanilla'
 best_r2_so_far = [.88,.88,.88,.88,.88]
@@ -33,7 +35,37 @@ holdout['sqft_above']=holdout[["sqft_above"]].apply(log_transform, axis=1)
 df['sqft_product'] = df['sqft_living'] * df['sqft_lot']
 holdout['sqft_product'] = holdout['sqft_living'] * holdout['sqft_lot']
 
+df['year'] = pd.to_datetime(df['date']).dt.year
+df['month'] = pd.to_datetime(df['date']).dt.month
+df['day'] = pd.to_datetime(df['date']).dt.day
 
+# drop date column
+df = df.drop('date', axis=1)
+#%%
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(22,8))
+plt.scatter(df.index, df["price"], color="red", lw=3)
+plt.plot(df.index, df["price"])
+plt.title("Prices of homes")
+plt.grid(True)
+plt.show()
+
+#%%
+
+fig, ax1 = plt.subplots(7, 3, figsize=(20, 25)) # Adjust the number of subplots based on the number of features you want to plot
+k = 0
+columns = list(df.columns)
+for i in range(7):
+    for j in range(3):
+        if k < len(columns):
+            sns.distplot(df[columns[k]], ax=ax1[i][j], color='green')
+            ax1[i][j].grid(True)
+            k += 1
+plt.show()
+
+#%%
 
 while True:
 
