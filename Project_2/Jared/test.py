@@ -1,20 +1,23 @@
+#%%
 import pandas as pd
-from xgboost import XGBRegressor
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_absolute_error
-from geopy.distance import geodesic
-from sklearn.metrics import mean_absolute_error
-from sklearn.metrics import mean_squared_error
-from math import sqrt
-from sklearn.metrics import r2_score
-
+# from xgboost import XGBRegressor
+# from sklearn.model_selection import train_test_split, GridSearchCV
+# from sklearn.metrics import mean_absolute_error
+# from geopy.distance import geodesic
+# from sklearn.metrics import mean_absolute_error
+# from sklearn.metrics import mean_squared_error
+# from math import sqrt
+# from sklearn.metrics import r2_score
+#%%
 housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
+print(housing.describe())
 
 housing['built_after_1976'] = (housing['yr_built'] > 1976).astype(int)
 
+#%%
 def calculate_distance(lat1, lon1, lat2, lon2):
     return geodesic((lat1, lon1), (lat2, lon2)).miles
-
+#%%
 locations = {
     "Amazon_HQ": (47.62246, -122.336775),
     "Microsoft": (47.64429, -122.12518),
