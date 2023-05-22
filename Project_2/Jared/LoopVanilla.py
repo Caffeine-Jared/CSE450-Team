@@ -31,7 +31,8 @@ df["sqft_living"]=df[["sqft_living"]].apply(log_transform, axis=1)
 holdout["sqft_living"]=holdout[["sqft_living"]].apply(log_transform, axis=1)
 df['sqft_above']=df[["sqft_above"]].apply(log_transform, axis=1)
 holdout['sqft_above']=holdout[["sqft_above"]].apply(log_transform, axis=1)
-
+df["sqft_living15"]=df[["sqft_living15"]].apply(log_transform, axis=1)
+holdout["sqft_living15"]=holdout[["sqft_living15"]].apply(log_transform, axis=1)
 df['sqft_product'] = df['sqft_living'] * df['sqft_lot']
 holdout['sqft_product'] = holdout['sqft_living'] * holdout['sqft_lot']
 
@@ -64,6 +65,9 @@ for i in range(7):
             ax1[i][j].grid(True)
             k += 1
 plt.show()
+
+#%%
+
 
 #%%
 
