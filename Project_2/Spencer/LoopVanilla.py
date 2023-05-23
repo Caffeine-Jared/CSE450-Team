@@ -5,44 +5,23 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score
-#from geopy.distance import geodesic
 import math
 import random
 import os
 
 
-
-save_folder = r'C:\Users\dogeb\Documents\GitHub\CSE450-Team\Project_2\Results W HP'
-best_r2_so_far = [.88,.88,.88,.88,.88]
+# Save Folder and loop count
+save_folder = r'C:\Users\dogeb\Documents\GitHub\CSE450-Team\Project_2\New Models'
+best_r2_so_far = 0
 count = 0
 count_all = 0
 
 
+# Get data
 df = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 holdout = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini.csv')
 holdout_target = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini_answers.csv')
 
-
-
-# add built_after_1976 column to dataframe - hot encode it
-#df['built_after_1976'] = (df['yr_built'] > 1976).astype(int)
-#holdout['built_after_1976'] = (holdout['yr_built'] > 1976).astype(int)
-
-# calculate distance from each location
-#def calculate_distance(lat1, lon1, lat2, lon2):
-#    return geodesic((lat1, lon1), (lat2, lon2)).miles
-
-#locations = {
-#    "Amazon_HQ": (47.62246, -122.336775),
-#    "Microsoft": (47.64429, -122.12518),
-#    "Starbucks": (47.580463, -122.335897),
-#    "Boeing_Plant": (47.543969, -122.316443)
-#}
-
-# add distance columns to dataframe
-#for name, coords in locations.items():
-#    df[name + '_distance'] = df.apply(lambda row: calculate_distance(row['lat'], row['long'], coords[0], coords[1]), axis=1)
-#    holdout[name + '_distance'] = df.apply(lambda row: calculate_distance(row['lat'], row['long'], coords[0], coords[1]), axis=1)
 
 # add sqft_product, year, month, and day columns to dataframe
 df['sqft_product'] = df['sqft_living'] * df['sqft_lot']
@@ -52,24 +31,33 @@ holdout['sqft_product'] = holdout['sqft_living'] * holdout['sqft_lot']
 
 while True:
 
-    # 'zipcode','lat','long','waterfront','sqft_lot','sqft_above','view','grade','sqft_living15'
+    # Choose Features
     sure_features =  [ 'zipcode','lat','long','waterfront','sqft_lot','sqft_above','view','grade','sqft_living15']
     possible_features = ['sqft_living','bedrooms','bathrooms','floors','condition','sqft_basement','yr_built','yr_renovated','sqft_lot15','sqft_product']
     num_features = random.randint(0, len(possible_features) -1)
     features = random.sample(possible_features, num_features) + sure_features 
 
+    # Split from fetures and price
     X = df[features]
     y = df['price']
     X_holdout = holdout[features]
     y_holdout = holdout_target['price']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=25)
+
+    # 80/10/10 Split
+    # Train/Val/Double Check/Test
+    X_train, X_set, y_train, y_set = train_test_split(X, y, test_size=0.2, random_state=25)
+    X_val, X_test, y_val, y_test = train_test_split(X_set, y_set, test_size=0.33, random_state=25)
+
+    # XGB Matrix creations for train/val/val2/test/hold
     dtrain = xgb.DMatrix(X_train, label=y_train)
+    dval = xgb.DMatrix(X_val, label=y_val)
     dtest = xgb.DMatrix(X_test, label=y_test)
     dhold = xgb.DMatrix(X_holdout, label=y_holdout)
 
     #9,0.1
-    depth = ['7','8','9','10','11','12','13','14','15']
-    rate = ['0.01','0.02','0.03','0.04','0.05','0.06','0.07','0.08','0.09','0.1']
+    # Choose Hyper Parameters
+    depth = ['5','6','7','8','9','10']
+    rate = ['0.10','0.11','0.12','0.13','0.14','0.15','0.16','0.17','0.18','0.19']
     max_depth = random.sample(depth, 1)
     learning_rate = random.sample(rate, 1)
     max_depth = str(max_depth).strip("'[]'")
@@ -83,48 +71,57 @@ while True:
               'gpu_id': 0}
 
 
-    num_boost_round = 100
-    model = xgb.train(reg_params, dtrain, num_boost_round)
-    y_pred = model.predict(dtest)
-    r2 = r2_score(y_test, y_pred)
+    # Train Model 
+    rounds = ['50','100','150','200']
+    num_boost_round = random.sample(rounds, 1)
+    num_boost_round = str(num_boost_round).strip("'[]'")
+    model = xgb.train(reg_params, dtrain, int(num_boost_round))
+    y_pred = model.predict(dval)
+
+
+    # Validate Model
+    r2 = r2_score(y_val, y_pred)
 
     count_all += 1
     print(count_all)
 
-    for i in [4, 3, 2, 1, 0]:
-        if r2 > best_r2_so_far[i]:
-            best_r2_so_far[i] = r2
-            count += 1
+    if r2 > best_r2_so_far:
 
-            holdout_predictions = model.predict(dhold)
-            rmse = math.sqrt(mean_squared_error(y_test, y_pred))
-            h_r2 = r2_score(holdout_predictions, holdout_target)
-            h_rmse = math.sqrt(mean_squared_error(holdout_predictions, holdout_target))
+        # Document best score
+        best_r2_so_far = r2
+        count += 1
 
-            print(f'got one! Number {count}')
-            text = 'Score\n'
-            text = text + 'r2   = ' + str(r2) + '\n'
-            text = text + 'rmse = ' + str(rmse) + '\n'
-            text = text + 'Holdout\n'
-            text = text + 'r2   = ' + str(h_r2) + '\n'
-            text = text + 'rmse = ' + str(h_rmse) + '\n'
-            text = text + max_depth + '\n'
-            text = text + learning_rate + '\n\n'
-            text = text + 'Features\n'
+        # Get Test and Holdout scores
+        test_predictions = model.predict(dtest)
+        holdout_predictions = model.predict(dhold)
+        test_r2 = r2_score(y_test, test_predictions)
+        h_r2 = r2_score(holdout_predictions, holdout_target)
 
-            for f in features:
-                text = text + f + '\n'
+        #rmse = math.sqrt(mean_squared_error(y_test, y_pred))
+        #h_rmse = math.sqrt(mean_squared_error(holdout_predictions, holdout_target))
 
-            file_name = 'r2 = ' + str(format(float(r2),".4f")) + ' h_r2 = ' + str(format(float(h_r2),".4f")) + '.txt'
+        # Make text file
+        print(f'got one! Number {count}')
+        text = 'Score\n'
+        text = text + 'val1 r2   = ' + str(r2) + '\n'
+        text = text + 'test r2   = ' + str(test_r2) + '\n'
+        text = text + 'hold r2   = ' + str(h_r2) + '\n\n'
+        text = text + 'depth     = ' + str(max_depth) + '\n'
+        text = text + 'rate      = ' + str(learning_rate) + '\n'
+        text = text + 'rounds    = ' + str(num_boost_round) + '\n\n'
+        text = text + 'Features\n'
 
-            # Specify the file name and path
-            file_path = os.path.join(save_folder, file_name)
+        for f in features:
+            text = text + f + '\n'
 
-            # Save the text content to a new file
-            with open(file_path, 'w') as f:
-                f.write(text)
-                print (file_name)
+        file_name = 'r2 = ' + str(format(float(r2),".6f")) + '.txt'
 
-            print("New text file created successfully.")
+        # Specify the file name and path
+        file_path = os.path.join(save_folder, file_name)
 
-            break
+        # Save the text content to a new file
+        with open(file_path, 'w') as f:
+            f.write(text)
+            print (file_name)
+
+        print("New text file created successfully.")
