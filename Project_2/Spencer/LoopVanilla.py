@@ -46,7 +46,7 @@ while True:
     # 80/10/10 Split
     # Train/Val/Double Check/Test
     X_train, X_set, y_train, y_set = train_test_split(X, y, test_size=0.2, random_state=25)
-    X_val, X_test, y_val, y_test = train_test_split(X_set, y_set, test_size=0.33, random_state=25)
+    X_val, X_test, y_val, y_test = train_test_split(X_set, y_set, test_size=0.5, random_state=25)
 
     # XGB Matrix creations for train/val/val2/test/hold
     dtrain = xgb.DMatrix(X_train, label=y_train)
