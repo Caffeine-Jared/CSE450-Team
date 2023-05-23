@@ -14,7 +14,7 @@ import seaborn as sns
 
 #%%
 
-save_folder = r'C:\Users\jared\Documents\GitHub\CSE450-Team\Project_2\Results Vanilla'
+save_folder = r'/content/drive/MyDrive/Project_2/'
 best_r2_so_far = [.88,.88,.88,.88,.88]
 count = 0
 count_all = 0
@@ -35,6 +35,8 @@ df["sqft_living15"]=df[["sqft_living15"]].apply(log_transform, axis=1)
 holdout["sqft_living15"]=holdout[["sqft_living15"]].apply(log_transform, axis=1)
 df['sqft_product'] = df['sqft_living'] * df['sqft_lot']
 holdout['sqft_product'] = holdout['sqft_living'] * holdout['sqft_lot']
+df['sqft_quotient'] = df['sqft_living'] / df['sqft_lot']
+holdout['sqft_quotient'] = holdout['sqft_living'] / holdout['sqft_lot']
 
 df['year'] = pd.to_datetime(df['date']).dt.year
 df['month'] = pd.to_datetime(df['date']).dt.month
