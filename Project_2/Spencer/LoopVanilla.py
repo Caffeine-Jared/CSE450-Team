@@ -23,11 +23,18 @@ holdout = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/
 holdout_target = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini_answers.csv')
 
 
+
 # add sqft_product, year, month, and day columns to dataframe
 df['sqft_product'] = df['sqft_living'] * df['sqft_lot']
 holdout['sqft_product'] = holdout['sqft_living'] * holdout['sqft_lot']
 
 
+
+    
+
+# Apply the function
+df = merge_distance_cols(df, zip_codes)
+holdout = merge_distance_cols(holdout, zip_codes)
 
 while True:
 

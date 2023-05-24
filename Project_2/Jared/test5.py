@@ -1,218 +1,177 @@
-#%%
 import pandas as pd
-import xgboost as xgb
-from xgboost import XGBRegressor, plot_tree, plot_importance, to_graphviz
+from xgboost import XGBRegressor
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_absolute_error
-from geopy.distance import geodesic
-from sklearn.metrics import mean_squared_error
-from math import sqrt
-from sklearn.metrics import r2_score
+from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, mean_absolute_error
+import xgboost as xgb
+import math
 import numpy as np
-from sklearn.preprocessing import OneHotEncoder
-# from sklearn.preprocessing import MinMaxScaler
-import neptune
-from neptune.integrations.xgboost import NeptuneCallback
-from matplotlib import pyplot as plt
+from sklearn.metrics import make_scorer
 import seaborn as sns
+import random
+import os
+from sklearn.preprocessing import RobustScaler, MinMaxScaler
 
-# # ask the user for the api key
-# api_key = input("Please enter your Neptune API key: ")
+# from tune_sklearn import TuneGridSearchCV
+# import joblib
+from google.colab import drive
 
-# # neptune ai implementation
-# run = neptune.init_run(
-#     project="jaredlin70/CSE450-Project2",
-#     api_token=api_key,
-# )
+# # Mount Google Drive
+drive.mount('/content/drive')
 
-# load in data for housing from Seattle
-housing = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
+save_folder = r'/content/drive/MyDrive/Project_2/'
+best_r2_so_far = 0.913857
+count = 0
+count_all = 0
 
-# add sqft_product, year, month, and day columns to dataframe
-housing['sqft_product'] = housing['sqft_living'] * housing['sqft_lot']
-housing['year'] = pd.to_datetime(housing['date']).dt.year
-housing['month'] = pd.to_datetime(housing['date']).dt.month
-housing['day'] = pd.to_datetime(housing['date']).dt.day
-
-# drop date column
-housing = housing.drop('date', axis=1)
-
-# create X and y - drop price from X
-X = housing.drop('price', axis=1)
-y = housing['price']
-
-#%%
-
-fig, ax1 = plt.subplots(7,2, figsize=(20,25))
-k = 0
-columns = list(housing.columns)
-for i in range(7):
-    for j in range(2):
-            sns.distplot(housing[columns[k]], ax = ax1[i][j], color = 'green')
-            ax1[i][j].grid(True)
-            k += 1
-plt.show()
-
-#%%
-
-# we probably want to use a robust scaler that isn't effected by outliers - this would be the best way to scale the data, but it might not be necessary if we just use scaler
-fig, ax1 = plt.subplots(7,2, figsize=(20,25))
-k = 0
-columns = list(housing.columns)
-for i in range(7):
-    for j in range(2):
-            sns.distplot(housing[columns[k]], ax = ax1[i][j], color = 'green')
-            ax1[i][j].grid(True)
-            k += 1
-plt.show()
-
-#%%
+df = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
+holdout = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini.csv')
+holdout_target = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini_answers.csv')
+zip_codes = pd.read_csv('/content/drive/MyDrive/Project_2/zipcodes_file.csv')
 
 def log_transform(col):
     return np.log(col[0])
 
-housing["sqft_living"]=housing[["sqft_living"]].apply(log_transform, axis=1)
-#Plot
-sns.distplot(housing["sqft_living"], color = 'green')
-plt.grid(True)
-plt.show()
+# log transform on sqft_living and sqft_above
+df["sqft_living"]=df[["sqft_living"]].apply(log_transform, axis=1)
+holdout["sqft_living"]=holdout[["sqft_living"]].apply(log_transform, axis=1)
+df['sqft_above']=df[["sqft_above"]].apply(log_transform, axis=1)
+holdout['sqft_above']=holdout[["sqft_above"]].apply(log_transform, axis=1)
+df["sqft_living15"]=df[["sqft_living15"]].apply(log_transform, axis=1)
+holdout["sqft_living15"]=holdout[["sqft_living15"]].apply(log_transform, axis=1)
+df['sqft_product'] = df['sqft_living'] * df['sqft_lot']
+holdout['sqft_product'] = holdout['sqft_living'] * holdout['sqft_lot']
+df['sqft_quotient'] = df['sqft_living'] / df['sqft_lot']
+holdout['sqft_quotient'] = holdout['sqft_living'] / holdout['sqft_lot']
+
+
+
+df['year'] = pd.to_datetime(df['date']).dt.year
+df['month'] = pd.to_datetime(df['date']).dt.month
+df['day'] = pd.to_datetime(df['date']).dt.day
+
+# drop date column
+df = df.drop('date', axis=1)
 #%%
-
-housing["sqft_above"]=housing[["sqft_above"]].apply(log_transform, axis=1)
-#Plot
-sns.distplot(housing["sqft_above"], color = 'green')
-plt.grid(True)
-plt.show()
-#%%
-
-plt.figure(figsize=(20,10))
-corr=abs(housing.corr())
-sns.heatmap(corr,annot=True,linewidth=1,cmap="Blues")
-plt.show()
-
-plt.figure(figsize=(20,10))
-plt.plot(corr["price"].sort_values(ascending=False)[1:],label="Correlation",color="red")
-plt.ylabel("Correlation")
-plt.xlabel("Feature")
-plt.legend()
-plt.tight_layout()
-plt.grid(True)
-plt.show()
-#%%
-
-fig, ax = plt.subplots(11, 2, figsize=(20, 50))  # Adjust to create 22 subplots
-columns = 
-k = 0
-for i in range(11):  # Loop over 11 rows
-    for j in range(2):  # Loop over 2 columns
-        if k < len(columns):  # Check that there's still a variable to plot
-            sns.regplot(x=columns[k], y="price", data=housing, ax=ax[i][j], color="green")
-            ax[i][j].grid(True)
-            k += 1
-plt.tight_layout()  # Adjust subplot parameters to give specified padding
-plt.show()
 
 #%%
 
-fig, axs = plt.subplots(ncols=2, nrows=11, figsize=(20, 50))  # Adjust to create 22 subplots
-columns = ['grade', 'waterfront', 'sqft_living', 'lat', 'view','sqft_living15','sqft_product', 'sqft_above', 'year', 'yr_built', 'zipcode', 'bathrooms', 'condition', 'long', 'sqft_lot15', 'yr_renovated', 'floors', 'sqft_lot']
-index = 0
-axs = axs.flatten()
-for k in columns:
-    sns.boxplot(y=k, data=housing, ax=axs[index], color="yellow")
-    index += 1
-plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=5.0)
-plt.show()
+def merge_distance_cols(main_df, holdout_df, zip_codes):
+    # Select only the columns to be merged
+    zip_codes_subset = zip_codes[['zipcode', 'Amazon_HQ', 'Microsoft', 'Starbucks', 'Boeing_Plant']]
+    
+    # Merge the dataframes
+    main_df = pd.merge(main_df, zip_codes_subset, how='left', on='zipcode')
+    holdout_df = pd.merge(holdout_df, zip_codes_subset, how='left', on='zipcode')
+    
+    # Save the merged dataframes
+    main_df.to_csv('merged_main_df.csv')
+    holdout_df.to_csv('merged_holdout_df.csv')
 
-for k in columns:
-    v = housing[k]
-    q1 = v.quantile(0.25)
-    q3 = v.quantile(0.75)
-    irq = q3 - q1
-    v_col = v[(v <= q1 - 1.5 * irq) | (v >= q3 + 1.5 * irq)]
-    perc = np.shape(v_col)[0] * 100.0 / np.shape(housing)[0]
-    print("Column %s outliers = %.2f%%" % (k, perc))
+    # Return the updated dataframes in case they need to be used later in the program
+    return main_df, holdout_df
+
+df, holdout = merge_distance_cols(df, holdout, zip_codes)
 
 #%%
-# split data into training, validation, and testing sets
-X_set, X_test, y_set, y_test = train_test_split(X, y, test_size=0.1)
-X_train, X_val, y_train, y_val = train_test_split(X_set, y_set, test_size=0.2)
+count_all = 0
+best_r2_so_far = 0.91
 
-# create the xgboost matrices
-dtrain = xgb.DMatrix(X_train, label=y_train)
-dval = xgb.DMatrix(X_val, label=y_val)
+while True:
+    # Choose Features
+    sure_features =  [ 'zipcode','lat','long','waterfront','sqft_lot','sqft_above','view','grade','sqft_living15', 'Amazon_HQ', 'Microsoft', 'Starbucks', 'Boeing_Plant','yr_built','sqft_product']
+    possible_features = ['sqft_living','bedrooms','bathrooms','floors','condition','sqft_basement','yr_renovated','sqft_lot15','sqft_quotient']
+    num_features = random.randint(0, len(possible_features) -1)
+    features = random.sample(possible_features, num_features) + sure_features 
 
-evals = [(dtrain, "train"), (dval, "valid")]
-npt_callback = NeptuneCallback(run=run)
+    # Split from fetures and price
+    X = df[features]
+    y = df['price']
+    X_holdout = holdout[features]
+    y_holdout = holdout_target['price']
 
-# create the parameter grid
-params_grid = {
-    "n_estimators": 1000,
-    "max_depth": 6,
-    "learning_rate": 0.1,
-    "subsample": 0.7,
-    "colsample_bytree": 0.7,
-    "objective": "reg:squarederror",
-    "seed": 42,
-}
+    # # Instantiate Robust Scaler
+    # scaler = MinMaxScaler()
+    
+    # # Fit the scaler on X
+    # scaler.fit(X)
 
-# train the model
-model = xgb.train(
-    params=params_grid,
-    dtrain=dtrain,
-    num_boost_round=1000,
-    evals=evals,
-    early_stopping_rounds=10,
-    callbacks=[npt_callback],
-)
+    # # Transform the data
+    # X = scaler.transform(X)
+    # X_holdout = scaler.transform(X_holdout)
 
-# create the xgboost matrix for the test data
-dtest = xgb.DMatrix(X_test, label=y_test)
+    # 80/10/10 Split
+    # Train/Val/Double Check/Test
+    X_train, X_set, y_train, y_set = train_test_split(X, y, test_size=0.2, random_state=25)
+    X_val, X_test, y_val, y_test = train_test_split(X_set, y_set, test_size=0.33, random_state=25)
+    # Define parameters for GridSearchCV
+    param_grid = {
+        'max_depth': [5, 6, 7, 8, 9, 10],
+        'learning_rate': [0.10, 0.11, 0.12, 0.13],
+        'n_estimators': [50, 100, 150, 200, 300]
+    }
 
-# make predictions on the test data
-y_pred = model.predict(dtest)
+    # XGB Regressor setup
+    xgbr = xgb.XGBRegressor(objective='reg:squarederror', tree_method='gpu_hist', gpu_id=0, random_state=25)
+    grid = GridSearchCV(xgbr, param_grid, cv=3, scoring=make_scorer(r2_score), verbose=2)
 
-# calculate the mean absolute error
-mae = mean_absolute_error(y_test, y_pred)
+    grid.fit(X_train, y_train)
 
-# calculate the mean squared error
-mse = mean_squared_error(y_test, y_pred)
+    model = grid.best_estimator_
 
-# calculate the root mean squared error
-rmse = sqrt(mse)
+    # get best params
+    best_params = grid.best_params_
 
-# calculate the r2 score
-r2 = r2_score(y_test, y_pred)
+    # pred values
+    y_pred = model.predict(X_val)
 
-# log the metrics to neptune
-run["mae"].log(mae)
-run["mse"].log(mse)
-run["rmse"].log(rmse)
-run["r2"].log(r2)
+    # r2 score
+    r2 = r2_score(y_val, y_pred)
 
-# log the model to neptune
-run["model"].upload(File.as_pickle(model))
+    X_test = np.array(X_test)
+    X_holdout = np.array(X_holdout)
+    y_test = np.array(y_test)
+    y_holdout = np.array(y_holdout)
 
-# log the feature importances to neptune
-fig, ax = plt.subplots(figsize=(12, 18))
-plot_importance(model, ax=ax)
-run["feature_importances"].log(neptune.types.File.as_image(fig))
+    test_predictions = model.predict(X_test)
+    holdout_predictions = model.predict(X_holdout)
 
-# log the feature correlations to neptune
-corr = X.corr()
-fig, ax = plt.subplots(figsize=(12, 18))
-sns.heatmap(corr, annot=True, ax=ax)
-run["feature_correlations"].log(neptune.types.File.as_image(fig))
+    test_r2 = r2_score(y_test, test_predictions)
+    h_r2 = r2_score(y_holdout, holdout_predictions)
 
-# log the feature correlations to neptune
-fig, ax = plt.subplots(figsize=(12, 18))
-plot_tree(model, ax=ax)
-run["tree"].log(neptune.types.File.as_image(fig))
+    rmse_test = np.sqrt(mean_squared_error(y_test, test_predictions))
+    rmse_holdout = np.sqrt(mean_squared_error(y_holdout, holdout_predictions))
 
-# log the feature correlations to neptune
-fig, ax = plt.subplots(figsize=(12, 18))
-to_graphviz(model, ax=ax)
-run["graphviz"].log(neptune.types.File.as_image(fig))
+    mae_test = mean_absolute_error(y_test, test_predictions)
+    mae_holdout = mean_absolute_error(y_holdout, holdout_predictions)
 
-# end the neptune run
-run.stop()
+    mse_test = mean_squared_error(y_test, test_predictions)
+    mse_holdout = mean_squared_error(y_holdout, holdout_predictions)
+
+    if test_r2 > best_r2_so_far or h_r2 > best_r2_so_far:
+      # change to allow for best r2 of test or holdout 
+      best_r2_so_far = max(test_r2, h_r2)
+
+      # updated results
+      file_name = 'r2 = ' + str(format(float(r2), ".6f")) + '.txt'
+      file_path = os.path.join(save_folder, file_name)
+
+      with open(file_path, 'w') as f:
+          f.write('Score\n')
+          f.write('val1 r2   = ' + str(r2) + '\n')
+          f.write('test r2   = ' + str(test_r2) + '\n')
+          f.write('hold r2   = ' + str(h_r2) + '\n\n')
+          f.write('test RMSE = ' + str(rmse_test) + '\n')
+          f.write('hold RMSE = ' + str(rmse_holdout) + '\n\n')
+          f.write('test MAE  = ' + str(mae_test) + '\n')
+          f.write('hold MAE  = ' + str(mae_holdout) + '\n\n')
+          f.write('test MSE  = ' + str(mse_test) + '\n')
+          f.write('hold MSE  = ' + str(mse_holdout) + '\n\n')
+          f.write('Parameters\n')
+          f.write('max_depth     = ' + str(best_params['max_depth']) + '\n')
+          f.write('learning_rate = ' + str(best_params['learning_rate']) + '\n')
+          f.write('n_estimators  = ' + str(best_params['n_estimators']) + '\n\n')
+          f.write('Features\n')
+          for feature in features:
+              f.write(feature + '\n')
+
+      print("New text file created successfully.")

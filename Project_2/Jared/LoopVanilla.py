@@ -22,6 +22,7 @@ count_all = 0
 df = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing.csv')
 holdout = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini.csv')
 holdout_target = pd.read_csv('https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/housing_holdout_test_mini_answers.csv')
+zip_codes = pd.read_csv('C:/Users/jared/Documents/GitHub/CSE450-Team/zipcodes_file.csv')
 
 def log_transform(col):
     return np.log(col[0])
@@ -70,6 +71,15 @@ plt.show()
 
 #%%
 
+def merge_distance_cols(df, zip_codes):
+    # Select only the columns to be merged
+    zip_codes_subset = zip_codes[['zipcode', 'Amazon_HQ', 'Microsoft', 'Starbucks', 'Boeing_Plant']]
+    
+    # Merge the dataframes
+    merged_df = pd.merge(df, zip_codes_subset, how='left', on='zipcode')
+    merged_df.to_csv('merged_df.csv')
+
+merge_distance_cols(df, zip_codes)
 
 #%%
 
@@ -77,7 +87,7 @@ while True:
 
     # 'zipcode','lat','long','waterfront','sqft_lot','sqft_above','view','grade','sqft_living15'
     sure_features =  [ 'zipcode','lat','long','waterfront','sqft_lot','sqft_above','view','grade','sqft_living15']
-    possible_features = ['sqft_living','bedrooms','bathrooms','floors','condition','sqft_basement','yr_built','yr_renovated','sqft_lot15','sqft_product']
+    possible_features = ['sqft_living','bedrooms','bathrooms','floors','condition','sqft_basement','yr_built','yr_renovated','sqft_lot15','sqft_product','sqft_quotient']
     num_features = random.randint(0, len(possible_features) -1)
     features = random.sample(possible_features, num_features) + sure_features 
 
