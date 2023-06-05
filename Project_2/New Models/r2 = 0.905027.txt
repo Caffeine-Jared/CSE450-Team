@@ -1,0 +1,23 @@
+Score
+val1 r2   = 0.9050268314936345
+test r2   = 0.9141912106181053
+hold r2   = 0.8882716272983477
+
+depth     = 6
+rate      = 0.10
+rounds    = 300
+
+Features
+sqft_lot15
+condition
+sqft_living
+yr_renovated
+zipcode
+lat
+long
+waterfront
+sqft_lot
+sqft_above
+view
+grade
+sqft_living15

@@ -79,7 +79,7 @@ while True:
 
 
     # Train Model 
-    rounds = ['50','100','150','200']
+    rounds = ['150','200','250','300']
     num_boost_round = random.sample(rounds, 1)
     num_boost_round = str(num_boost_round).strip("'[]'")
     model = xgb.train(reg_params, dtrain, int(num_boost_round))

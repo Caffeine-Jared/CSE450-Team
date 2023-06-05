@@ -1,0 +1,24 @@
+Score
+val1 r2   = 0.8951089790558695
+test r2   = 0.8977127701538923
+hold r2   = 0.7880725611250248
+
+depth     = 9
+rate      = 0.15
+rounds    = 200
+
+Features
+bathrooms
+floors
+bedrooms
+yr_built
+sqft_living
+zipcode
+lat
+long
+waterfront
+sqft_lot
+sqft_above
+view
+grade
+sqft_living15
